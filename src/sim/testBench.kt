@@ -1,19 +1,20 @@
 package sim
 
-import sim.dsl.*
+import sim.base.ConstValue
+import sim.gates.*
 
 fun main() {
-	val A = ConstValue(true)
-	val B = ConstValue(false)
-	val C = ConstValue(false)
+  val A = ConstValue(true)
+  val B = ConstValue(false)
+  val C = ConstValue(false)
 
-	val res = andg(
+  val res = andg(
 
-		org(A.not, B, C),
-		notg(B),
-		xorg(B, A)
+	org(A.not, B, C),
+	notg(B),
+	xorg(B, A)
 
-	)
+  )
 
-	println("res: " + res.get())
+  println("res: " + res.get())
 }

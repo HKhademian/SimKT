@@ -1,6 +1,7 @@
-package sim.comb
+package sim.gates
 
-import sim.Value
+import sim.base.Value
+import sim.base.Wire
 
 inline fun wire(input: Value) = Wire(input)
 inline fun notg(input: Value) = NotGate(input)

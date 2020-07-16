@@ -1,6 +1,6 @@
-package sim.comb
+package sim.gates
 
-import sim.Value
+import sim.base.Value
 
 fun XnorGate(inputs: List<Value>) = NotGate(XorGate(inputs))
 fun XnorGate(vararg inputs: Value) = NotGate(XorGate(*inputs))

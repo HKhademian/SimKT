@@ -1,4 +1,4 @@
-package sim
+package sim.base
 
 /**
  * anything in a digital world is either 0 or 1
@@ -8,6 +8,11 @@ package sim
  * which allows us to lazily access the value
  */
 interface Value {
+	companion object {
+		val ZERO = ConstValue(false)
+		val ONE = ConstValue(true)
+	}
+
 	fun get(): Boolean =
 		false // default impl. just returns 0 logic value
 }
@@ -18,10 +23,22 @@ interface Value {
 interface MutableValue : Value {
 	fun set(value: Boolean) =
 		Unit // default impl. just trash the command
+
+	fun set(value: Value) =
+		set(value.get())
 }
 
 class ConstValue(private val value: Boolean) : Value {
 	override fun get() = value
+	override fun toString() = value.toString()
+}
+
+class VariableValue(private var value: Boolean) : MutableValue {
+	override fun get() = value
+	override fun set(value: Boolean) {
+		this.value = value
+	}
+
 	override fun toString() = value.toString()
 }
 

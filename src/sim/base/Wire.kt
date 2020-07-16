@@ -1,8 +1,4 @@
-package sim.comb
-
-import sim.Element
-//import sim.ProxyValue
-import sim.Value
+package sim.base
 
 class Wire(override val input: Value) : Element {
 	// override val output = ProxyValue(input)
