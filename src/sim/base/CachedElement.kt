@@ -8,7 +8,7 @@ package sim.base
 abstract class CachedElement(override val isSequential: Boolean = false) : Element {
   private val cache = VariableValue(false)
 
-  open fun compute(): Value =
+  protected open fun compute(cache: Value): Value =
 	Value.ZERO
 
   /**
@@ -16,7 +16,7 @@ abstract class CachedElement(override val isSequential: Boolean = false) : Eleme
    * and returns result
    */
   final override fun eval() =
-	compute().also(cache::set)
+	compute(cache).also(cache::set)
 
   /**
    * if the gate is a not sequential it updates its cache

@@ -8,15 +8,14 @@ import sim.toInt
 
 class MuxN(
   val selectors: List<Value>,
-  override val inputs: List<Value>,
-  isSequential: Boolean = false
-) : CachedElement(isSequential), MultiInputElement {
+  override val inputs: List<Value>
+) : CachedElement(false), MultiInputElement {
   init {
 	if (inputs.size != 2 pow selectors.size)
 	  throw RuntimeException("inputs does not match")
   }
 
-  override fun compute(): Value {
+  override fun compute(cache: Value): Value {
 	val select = selectors.toInt()
 	return inputs[select]
   }

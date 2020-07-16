@@ -24,8 +24,11 @@ interface MutableValue : Value {
   fun set(value: Boolean) =
 	Unit // default impl. just trash the command
 
-  fun set(value: Value) =
+  fun set(value: Value = Value.ONE) =
 	set(value.get())
+
+  fun reset() =
+	set(Value.ZERO)
 }
 
 class ConstValue(private val value: Boolean) : Value {

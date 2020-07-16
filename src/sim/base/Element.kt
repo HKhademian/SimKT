@@ -6,7 +6,9 @@ package sim.base
  */
 interface Element : Value {
   val input: Value
+	get() = Value.ZERO // may it does not have any inputs!
   val output: Value
+	get() = Value.ZERO // may it does not have any outputs!
 
   val isSequential: Boolean
 	get() = false
