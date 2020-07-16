@@ -1,6 +1,8 @@
 package sim
 
 import sim.base.ConstValue
+import sim.base.Value
+import sim.complex.mux2
 import sim.gates.*
 
 fun main() {
@@ -17,4 +19,6 @@ fun main() {
   )
 
   println("res: " + res.get())
+
+  println("res mux: " + mux2(Value.ONE, A, B))
 }
