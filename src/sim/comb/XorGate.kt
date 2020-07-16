@@ -1,16 +1,17 @@
-package sim.gate
+package sim.comb
 
 import sim.ComputeValue
 import sim.MultiInputElement
 import sim.Value
 
-class OrGate(override val inputs: List<Value>) : MultiInputElement {
+class XorGate(override val inputs: List<Value>) : MultiInputElement {
 	constructor(vararg inputs: Value) : this(listOf(*inputs))
 
 	override val output = ComputeValue {
 		// TODO: cache for each call
+		var res = false
 		for (inp in inputs)
-			if (inp.get()) return@ComputeValue true      // NOTE: for better performance
-		return@ComputeValue false
+			res = res xor inp.get()
+		return@ComputeValue res
 	}
 }

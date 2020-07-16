@@ -1,4 +1,4 @@
-package sim.gate
+package sim.comb
 
 import sim.Element
 //import sim.ProxyValue

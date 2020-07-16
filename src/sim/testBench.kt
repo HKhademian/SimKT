@@ -1,6 +1,6 @@
 package sim
 
-import sim.functional.*
+import sim.dsl.*
 
 fun main() {
 	val A = ConstValue(true)

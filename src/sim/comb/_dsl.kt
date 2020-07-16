@@ -1,7 +1,6 @@
-package sim.functional
+package sim.comb
 
 import sim.Value
-import sim.gate.*
 
 inline fun wire(input: Value) = Wire(input)
 inline fun notg(input: Value) = NotGate(input)
@@ -20,5 +19,5 @@ inline fun norg(inputs: List<Value>) = NorGate(inputs)
 
 inline fun xorg(vararg inputs: Value) = XorGate(*inputs)
 inline fun xorg(inputs: List<Value>) = XorGate(inputs)
-inline fun nxorg(vararg inputs: Value) = NxorGate(*inputs)
-inline fun nxorg(inputs: List<Value>) = NxorGate(inputs)
+inline fun xnorg(vararg inputs: Value) = XnorGate(*inputs)
+inline fun xnorg(inputs: List<Value>) = XnorGate(inputs)
