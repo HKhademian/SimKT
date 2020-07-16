@@ -11,10 +11,12 @@ abstract class CachedElement(override val isSequential: Boolean = false) : Eleme
   open fun compute(): Value =
 	Value.ZERO
 
-  final override fun eval(): Value {
-	cache.set(compute())
-	return cache
-  }
+  /**
+   * compute current value, then stores it to cache
+   * and returns result
+   */
+  final override fun eval() =
+	compute().also(cache::set)
 
   /**
    * if the gate is a not sequential it updates its cache
@@ -22,5 +24,8 @@ abstract class CachedElement(override val isSequential: Boolean = false) : Eleme
    */
   override val output: Value
 	get() = cache.apply { if (!isSequential) eval() }
+
+  override fun toString() =
+	output.toString()
 }
 

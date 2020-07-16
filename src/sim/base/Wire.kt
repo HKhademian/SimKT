@@ -5,3 +5,5 @@ class Wire(override val input: Value) : Element {
   // simply get value from input :D
   override val output get() = input
 }
+
+typealias Bus = List<Wire>
