@@ -53,6 +53,24 @@ fun List<Value>.extend(n: Int = 0, shift: Int = 0, signed: Boolean = false, exte
 }
 
 
+/** zero-extend, default to 32 */
+fun List<Value>.zeroEx(n: Int = 32) =
+	extend(n = n)
+
+/** one-extend, default to 32 */
+fun List<Value>.oneEx(n: Int = 32) =
+	extend(n = n, extend = Value.ONE)
+
+/** sign-extend, default to 32 */
+fun List<Value>.signEx(n: Int = 32) =
+	extend(n = n, signed = true)
+
+
+/** signed, left:+, right:- */
+fun List<Value>.shift(shift: Int, signed: Boolean = false, n: Int = 0) =
+	extend(n = n, shift = shift, signed = signed)
+
+
 /** multiply by 2, with shift +1, do not changes system bits (number of values) */
 fun List<Value>.mul2() =
 	extend(shift = 1)
