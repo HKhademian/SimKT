@@ -32,6 +32,9 @@ interface MutableValue : Value {
 
 	fun reset() =
 		set(Value.ZERO)
+
+	fun toggle() =
+		set(!get())
 }
 
 

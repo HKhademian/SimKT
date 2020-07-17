@@ -4,16 +4,25 @@ import sim.base.Constant
 import sim.base.Value
 import kotlin.math.pow
 
+
+/** cache current value, and keep it for ever */
+fun Value.const() =
+	Constant(get())
+
 infix fun Int.pow(other: Number) =
 	this.toDouble().pow(other.toDouble()).toInt()
 
+/** converts a value to equivalent int */
+fun Value.toInt(): Int =
+	if (get()) 1 else 0
+
 /** converts a group of values to equivalent int */
 fun List<Value>.toInt(): Int =
-	this.foldRight(0) { it, acc: Int -> (acc shl 1) or (if (it.get()) 1 else 0) }
+	this.foldRight(0) { it, acc: Int -> (acc shl 1) or (it.toInt()) }
 
 /** converts a group of values to equivalent long int */
 fun List<Value>.toLong(): Long =
-	this.foldRight(0) { it, acc: Long -> (acc shl 1) or (if (it.get()) 1 else 0) }
+	this.foldRight(0) { it, acc: Long -> (acc shl 1) or (it.toInt().toLong()) }
 
 /** converts a integer to n-bit list of values */
 fun Int.toValue(n: Int = 32) =

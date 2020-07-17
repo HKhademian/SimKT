@@ -1,5 +1,7 @@
 package sim.base
 
+import sim.const
+
 /**
  * `CachedElement` is a bootstrap element implement,
  * it caches the result, and each time eval,
@@ -16,14 +18,14 @@ abstract class CachedElement(override val isSequential: Boolean = false) : Eleme
 	 * and returns result
 	 */
 	final override fun eval() =
-		compute(cache).also(cache::set)
+		compute(cache).const().also(cache::set)
 
 	/**
 	 * if the gate is a not sequential it updates its cache
 	 * then returns cached value
 	 */
 	override val output: Value
-		get() = cache.apply { if (!isSequential) eval() }
+		get() = cache.also { if (!isSequential) eval() }
 
 	override fun toString() =
 		output.toString()

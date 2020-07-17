@@ -3,6 +3,7 @@ package sim
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import sim.base.Value
 import sim.base.Variable
 import sim.complex.DFlipFlop
 
@@ -25,26 +26,34 @@ import sim.complex.DFlipFlop
 //}
 
 fun main() {
-	val data = Variable(false)
-	val clock = Variable(false)
+	val data = Variable(Value.ZERO)
+	val clock = Variable(Value.ZERO)
 	val dff = DFlipFlop(data, clock)
 
 	runBlocking {
 
 		async {
 			while (true) {
-				clock.set(!clock.get())
-				println("clock tick")
+				clock.toggle()
+				println("clock: $clock")
 				delay(1000)
 			}
 		}
 
-		while (true) {
-			val value = dff.eval().get()
-			data.set(!value)
-			println(value)
-			delay(100)
+		async {
+			while (true) {
+				data.toggle()
+				println("data: $data")
+				delay(3500)
+			}
 		}
+
+		while (true) {
+			dff.eval()
+			println("dff: $dff")
+			delay(900)
+		}
+
 
 	}
 }
