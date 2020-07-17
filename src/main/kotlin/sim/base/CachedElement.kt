@@ -6,7 +6,7 @@ package sim.base
  * remember, if `isSequential` is not set, then it acts like there is no cache
  */
 abstract class CachedElement(override val isSequential: Boolean = false) : Element {
-  private val cache = VariableValue(false)
+  private val cache = Variable(false)
 
   protected open fun compute(cache: Value): Value =
 	Value.ZERO

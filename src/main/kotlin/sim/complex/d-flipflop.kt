@@ -2,7 +2,7 @@ package sim.complex
 
 import sim.base.CachedElement
 import sim.base.Value
-import sim.base.VariableValue
+import sim.base.Variable
 
 /** posedge dff */
 class DFlipFlop(
@@ -10,7 +10,8 @@ class DFlipFlop(
   val clock: Value
 ) : CachedElement(true) {
   val q get() = output
-  private val prevClock = VariableValue(false)
+
+	private val prevClock = Variable(false)
 
   override fun compute(cache: Value): Value {
 	val clk = clock.get()

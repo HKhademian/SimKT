@@ -1,6 +1,6 @@
 package sim
 
-import sim.base.ConstValue
+import sim.base.Constant
 import sim.base.Value
 import kotlin.math.pow
 
@@ -17,4 +17,4 @@ fun List<Value>.toLong(): Long =
 
 /** converts a integer to n-bit list of values */
 fun Int.toValue(n: Int = 32) =
-	(0 until n).asSequence().map { 2 pow it }.map { (this and it) != 0 }.map { ConstValue(it) }.toList()
+	(0 until n).asSequence().map { 2 pow it }.map { (this and it) != 0 }.map { Constant(it) }.toList()

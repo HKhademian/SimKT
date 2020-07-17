@@ -3,7 +3,7 @@ package sim
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import sim.base.VariableValue
+import sim.base.Variable
 import sim.complex.DFlipFlop
 
 //fun main() {
@@ -25,8 +25,8 @@ import sim.complex.DFlipFlop
 //}
 
 fun main() {
-	val data = VariableValue(false)
-	val clock = VariableValue(false)
+	val data = Variable(false)
+	val clock = Variable(false)
 	val dff = DFlipFlop(data, clock)
 
 	runBlocking {
