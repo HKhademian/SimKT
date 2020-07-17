@@ -1,32 +1,12 @@
 package sim
 
-import sim.base.Constant
 import sim.base.Value
+import sim.base.toBus
+import sim.base.toInt
 import kotlin.math.pow
-
-
-/** cache current value, and keep it for ever */
-fun Value.const() =
-	Constant(get())
 
 infix fun Int.pow(other: Number) =
 	this.toDouble().pow(other.toDouble()).toInt()
-
-/** converts a value to equivalent int */
-fun Value.toInt(): Int =
-	if (get()) 1 else 0
-
-/** converts a group of values to equivalent int */
-fun List<Value>.toInt(): Int =
-	this.foldRight(0) { it, acc: Int -> (acc shl 1) or (it.toInt()) }
-
-/** converts a group of values to equivalent long int */
-fun List<Value>.toLong(): Long =
-	this.foldRight(0) { it, acc: Long -> (acc shl 1) or (it.toInt().toLong()) }
-
-/** converts a integer to n-bit list of values */
-fun Int.toValue(n: Int = 32) =
-	(0 until n).asSequence().map { 2 pow it }.map { (this and it) != 0 }.map { Constant(it) }.toList()
 
 /**
  * this method provides:
@@ -109,8 +89,8 @@ fun List<Value>.x32signed() =
 
 // test abilities
 fun main() {
-	val src = 1374.toValue(12) // 12-bit value list
-	//printing is ltr 0:n
+	val src = 1374.toBus(12) // 12-bit value list
+	// printing is ltr 0:n
 	// but correct binary is ltr n:0
 	// so do not confuse
 	println(

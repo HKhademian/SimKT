@@ -1,7 +1,5 @@
 package sim.base
 
-import sim.const
-
 /**
  * `CachedElement` is a bootstrap element implement,
  * it caches the result, and each time eval,

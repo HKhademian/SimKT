@@ -11,9 +11,6 @@ interface Value {
 	companion object {
 		val ZERO = Constant(false)
 		val ONE = Constant(true)
-
-		fun from(value: Boolean) =
-			if (value) Value.ONE else Value.ZERO
 	}
 
 	fun get(): Boolean =
@@ -28,7 +25,7 @@ interface MutableValue : Value {
 		Unit // default impl. just trash the command
 
 	fun set(value: Boolean) =
-		set(Value.from(value))
+		set(value.toValue())
 
 	fun reset() =
 		set(Value.ZERO)
@@ -45,7 +42,7 @@ class Constant(private val value: Boolean) : Value {
 
 class Variable(private var value: Value = Value.ZERO) : MutableValue {
 	constructor(value: Boolean)
-		: this(Value.from(value))
+		: this(value.toValue())
 
 	override fun get() =
 		value.get()
@@ -57,6 +54,19 @@ class Variable(private var value: Value = Value.ZERO) : MutableValue {
 	override fun toString() =
 		value.toString()
 }
+
+/** cache current value, and keep it for ever */
+fun Value.const() =
+	Constant(get())
+
+/** converts a value to equivalent int */
+fun Value.toInt(): Int =
+	if (get()) 1 else 0
+
+
+/** converts a bool to eq value */
+fun Boolean.toValue() =
+	if (this) Value.ONE else Value.ZERO
 
 
 /** Broadcast every `get` calls to value */
