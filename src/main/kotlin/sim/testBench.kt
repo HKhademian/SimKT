@@ -25,26 +25,26 @@ import sim.complex.DFlipFlop
 //}
 
 fun main() {
-  val data = VariableValue(false)
-  val clock = VariableValue(false)
-  val dff = DFlipFlop(data, clock)
+	val data = VariableValue(false)
+	val clock = VariableValue(false)
+	val dff = DFlipFlop(data, clock)
 
-  runBlocking {
+	runBlocking {
 
-	async {
-	  while (true) {
-		clock.set(!clock.get())
-		println("clock tick")
-		delay(1000)
-	  }
+		async {
+			while (true) {
+				clock.set(!clock.get())
+				println("clock tick")
+				delay(1000)
+			}
+		}
+
+		while (true) {
+			val value = dff.eval().get()
+			data.set(!value)
+			println(value)
+			delay(100)
+		}
+
 	}
-
-	while (true) {
-	  val value = dff.eval().get()
-	  data.set(!value)
-	  println(value)
-	  delay(100)
-	}
-
-  }
 }
