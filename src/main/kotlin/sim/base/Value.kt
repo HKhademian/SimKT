@@ -37,7 +37,7 @@ interface MutableValue : Value {
 
 class Constant(private val value: Boolean) : Value {
 	override fun get() = value
-	override fun toString() = value.toString()
+	override fun toString() = if (value) "1" else "0"
 }
 
 class Variable(private var value: Value = Value.ZERO) : MutableValue {
