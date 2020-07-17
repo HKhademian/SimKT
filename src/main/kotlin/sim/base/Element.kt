@@ -5,31 +5,31 @@ package sim.base
  * it has one `input`, one `output`, can `eval` on each simulation cycle
  */
 interface Element : Value {
-  val input: Value
-	get() = Value.ZERO // may it does not have any inputs!
-  val output: Value
-	get() = Value.ZERO // may it does not have any outputs!
+	val input: Value
+		get() = Value.ZERO // may it does not have any inputs!
+	val output: Value
+		get() = Value.ZERO // may it does not have any outputs!
 
-  val isSequential: Boolean
-	get() = false
+	val isSequential: Boolean
+		get() = false
 
-  /**
-   * if an element is a sequential,
-   * it needs to cache it's states
-   * to update it's state-machine
-   * every time, in each sim cycle
-   * we use this method to update its
-   * internal state
-   */
-  fun eval(): Value =
-	Value.ZERO // default, for comb. circuits
+	/**
+	 * if an element is a sequential,
+	 * it needs to cache it's states
+	 * to update it's state-machine
+	 * every time, in each sim cycle
+	 * we use this method to update its
+	 * internal state
+	 */
+	fun eval(): Value =
+		Value.ZERO // default, for comb. circuits
 
-  /**
-   * each element, at least has a single output,
-   * this method by default returns its fist output
-   */
-  override fun get() =
-	output.get()
+	/**
+	 * each element, at least has a single output,
+	 * this method by default returns its fist output
+	 */
+	override fun get() =
+		output.get()
 }
 
 /**
@@ -37,9 +37,9 @@ interface Element : Value {
  * we use this type of element to unify all usages
  */
 interface MultiInputElement : Element {
-  val inputs: List<Value>
-  override val input
-	get() = inputs[0] // default impl. just uses first input
+	val inputs: List<Value>
+	override val input
+		get() = inputs[0] // default impl. just uses first input
 }
 
 /**
@@ -47,9 +47,9 @@ interface MultiInputElement : Element {
  * we use this type of element to unify all usages
  */
 interface MultiOutputElement : Element {
-  val outputs: List<Value>
-  override val output
-	get() = outputs[0]  // default impl. just uses first output
+	val outputs: List<Value>
+	override val output
+		get() = outputs[0]  // default impl. just uses first output
 }
 
 /**
