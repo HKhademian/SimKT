@@ -1,12 +1,9 @@
 package sim.gates
 
-import sim.base.CachedElement
-import sim.base.MultiInputElement
-import sim.base.Value
-import sim.base.toValue
+import sim.base.*
 
-class XorGate(override val inputs: List<Value>) : CachedElement(false), MultiInputElement {
-	constructor(vararg inputs: Value) : this(listOf(*inputs))
+class XorGate(override val inputs: Bus) : CachedElement(false), MultiInputElement {
+	constructor(vararg inputs: Value) : this(bus(*inputs))
 
 	override fun compute(cache: Value): Value {
 		var res = false
