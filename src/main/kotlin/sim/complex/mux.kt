@@ -2,6 +2,7 @@ package sim.complex
 
 import sim.base.*
 import sim.pow
+import sim.println
 
 /** simulated N2One multiplexer */
 class MuxN(
@@ -12,6 +13,10 @@ class MuxN(
 		if (inputs.size != 2 pow selectors.size)
 			throw RuntimeException("inputs does not match")
 	}
+
+	override val title: String
+		get() = "Mux"
+
 
 	override fun compute(cache: Value): Value {
 		val select = selectors.toInt()
@@ -55,3 +60,38 @@ fun mux2(selector: Value, input0: Bus, input1: Bus) =
  */
 fun mux4(selector0: Value, selector1: Value, input0: Bus, input1: Bus, input2: Bus, input3: Bus) =
 	input0.zip(input1).zip(input2).zip(input3).map { mux4(selector0, selector1, it.first.first.first, it.first.first.second, it.first.second, it.second) }.toList()
+
+
+internal fun main() {
+	val A = 74.toBus(16)
+	val B = 99.toBus(16)
+	val s = Variable(false)
+
+	val res = mux2(s, A, B)
+
+	res[0].println()
+
+	println(
+		"""
+		s: $s
+		A: ${A.toInt()}
+		B: ${B.toInt()}
+		res: ${res.toInt()}
+		
+	""".trimIndent()
+	)
+
+	// I change just the selector
+	// see how result changed, on the fly, in real time
+	s.set(true)
+
+	println(
+		"""
+		s: $s
+		A: ${A.toInt()}
+		B: ${B.toInt()}
+		res: ${res.toInt()}
+		
+	""".trimIndent()
+	)
+}

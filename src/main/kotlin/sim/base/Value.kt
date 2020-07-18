@@ -9,12 +9,15 @@ package sim.base
  */
 interface Value {
 	companion object {
-		val ZERO = Constant(false)
-		val ONE = Constant(true)
+		val ZERO = Constant(false, "ZERO")
+		val ONE = Constant(true, "ONE")
 	}
 
 	fun get(): Boolean =
 		false // default impl. just returns 0 logic value
+
+	val title: String
+		get() = "Value"
 }
 
 /**
@@ -32,17 +35,22 @@ interface MutableValue : Value {
 
 	fun toggle() =
 		set(!get())
+
+	override val title: String
+		get() = "MutValue"
 }
 
 
-class Constant(private val value: Boolean) : Value {
+class Constant(private val value: Boolean, val name: String = "") : Value {
 	override fun get() = value
 	override fun toString() = if (value) "1" else "0"
+	override val title: String
+		get() = "<Const>$name"
 }
 
-class Variable(private var value: Value = Value.ZERO) : MutableValue {
-	constructor(value: Boolean)
-		: this(value.toValue())
+class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue {
+	constructor(value: Boolean, name: String = "")
+		: this(value.toValue(), name)
 
 	override fun get() =
 		value.get()
@@ -53,6 +61,9 @@ class Variable(private var value: Value = Value.ZERO) : MutableValue {
 
 	override fun toString() =
 		value.toString()
+
+	override val title: String
+		get() = "<Variable>$name"
 }
 
 /** cache current value, and keep it for ever */
@@ -72,11 +83,15 @@ fun Boolean.toValue() =
 /** Broadcast every `get` calls to value */
 class ProxyValue(private val value: Value) : Value by value {
 	override fun toString() = value.toString()
+	override val title: String
+		get() = "Proxy"
 }
 
 /** Broadcast every `set` calls to value */
 class ProxyMutableValue(private val value: MutableValue) : MutableValue by value {
 	override fun toString() = value.toString()
+	override val title: String
+		get() = "MutProxy"
 }
 
 /**
@@ -85,4 +100,6 @@ class ProxyMutableValue(private val value: MutableValue) : MutableValue by value
 class ComputeValue(private val compute: () -> Boolean) : Value {
 	override fun get() = compute()
 	override fun toString() = get().toString()
+	override val title: String
+		get() = "Compute"
 }

@@ -54,4 +54,4 @@ fun Bus.toLong(): Long =
 
 /** converts a integer to n-bit list of values */
 fun Int.toBus(n: Int = 32): Bus =
-	(0 until n).asSequence().map { 2 pow it }.map { (this and it) != 0 }.map { Constant(it) }.toList()
+	(0 until n).asSequence().map { Constant(this and (2 pow it) != 0, "#$it") }.toList()

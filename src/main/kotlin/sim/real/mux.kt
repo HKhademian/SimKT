@@ -1,10 +1,10 @@
 package sim.real
 
-import sim.base.Bus
-import sim.base.Value
+import sim.base.*
 import sim.gates.and
 import sim.gates.not
 import sim.gates.or
+import sim.println
 
 // hear I just try to implement real mux
 // I like to use recursive method to design data-path
@@ -42,6 +42,61 @@ fun mux(selector: Bus, input: List<Bus>): Bus =
 	if (selector.size <= 1) mux2(selector[0], input[0], input[1])
 	else mux2(
 		selector[selector.size - 1],
-		mux(selector.dropLast(1), input.slice(0 until input.size / 2)),
-		mux(selector.dropLast(1), input.slice(input.size until input.size))
+		mux(selector.dropLast(1), input.slice(0 until (input.size / 2))),
+		mux(selector.dropLast(1), input.slice((input.size / 2) until input.size))
 	)
+
+
+internal fun main() {
+	val A = 74.toBus(16)
+	val B = 99.toBus(16)
+	val C = 11.toBus(16)
+	val D = 49.toBus(16)
+	val s1 = Variable(false, "S1")
+	val s2 = Variable(false, "S2")
+
+	val res1 = mux2(s1, A, B)
+
+	// show path of a mux
+	res1[2].println()
+
+	println(
+		"""
+		A: ${A.toInt()}
+		B: ${B.toInt()}
+		
+		s1: $s1
+		res: ${res1.toInt()}
+	""".trimIndent()
+	)
+
+	// I change just the selector
+	// see how result changed, on the fly, in real time
+	s1.set(true)
+	println(
+		"""
+		s1: $s1
+		res: ${res1.toInt()}
+	""".trimIndent()
+	)
+
+	val res2 = mux(listOf(s1, s2), listOf(A, B, C, D))
+
+	res2[5].println()
+	println(
+		"""
+		s1s2: $s1 $s2
+		res: ${res2.toInt()}
+	""".trimIndent()
+	)
+
+	s2.set(true)
+	println(
+		"""
+		s1s2: $s1 $s2
+		res: ${res2.toInt()}
+	""".trimIndent()
+	)
+
+
+}
