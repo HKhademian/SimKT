@@ -6,6 +6,7 @@ import sim.base.Value
 import sim.base.toInt
 import sim.pow
 
+/** simulated N2One multiplexer */
 class MuxN(
 	val selectors: List<Value>,
 	override val inputs: List<Value>
@@ -21,8 +22,14 @@ class MuxN(
 	}
 }
 
+/** select between 2^n inputs */
+fun mux(selector: Value, vararg inputs: Value) =
+	MuxN(listOf(selector), listOf(*inputs))
+
+/** select between 2 inputs */
 fun mux2(selector: Value, input0: Value, input1: Value) =
 	MuxN(listOf(selector), listOf(input0, input1))
 
+/** select between 4 inputs */
 fun mux4(selector0: Value, selector1: Value, input0: Value, input1: Value, input3: Value, input4: Value) =
 	MuxN(listOf(selector0, selector1), listOf(input0, input1, input3, input4))
