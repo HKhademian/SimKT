@@ -1,7 +1,5 @@
 package sim.base
 
-import sim.pow
-
 typealias Wire = Variable
 typealias Bus = List<Value>
 typealias MutableBus = List<MutableValue>
@@ -54,4 +52,4 @@ fun Bus.toLong(): Long =
 
 /** converts a integer to n-bit list of values */
 fun Int.toBus(n: Int = 32): Bus =
-	(0 until n).asSequence().map { Constant(this and (2 pow it) != 0, "#$it") }.toList()
+	(0 until n).asSequence().map { Constant(this and (1 shl it) != 0, "#$it") }.toList()

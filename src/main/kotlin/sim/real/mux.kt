@@ -55,48 +55,27 @@ internal fun main() {
 	val s1 = Variable(false, "S1")
 	val s2 = Variable(false, "S2")
 
-	val res1 = mux2(s1, A, B)
-
-	// show path of a mux
-	res1[2].println()
-
 	println(
 		"""
 		A: ${A.toInt()}
 		B: ${B.toInt()}
-		
-		s1: $s1
-		res: ${res1.toInt()}
-	""".trimIndent()
+		C: ${C.toInt()}
+		D: ${D.toInt()}
+		""".trimIndent()
 	)
 
+	val res1 = mux2(s1, A, B)
+	res1[2].println() // show path of a mux
+	println("s1: $s1 -> res: ${res1.toInt()}")
 	// I change just the selector
 	// see how result changed, on the fly, in real time
 	s1.set(true)
-	println(
-		"""
-		s1: $s1
-		res: ${res1.toInt()}
-	""".trimIndent()
-	)
+	println("s1: $s1 -> res: ${res1.toInt()}")
+
 
 	val res2 = mux(listOf(s1, s2), listOf(A, B, C, D))
-
 	res2[5].println()
-	println(
-		"""
-		s1s2: $s1 $s2
-		res: ${res2.toInt()}
-	""".trimIndent()
-	)
-
-	s2.set(true)
-	println(
-		"""
-		s1s2: $s1 $s2
-		res: ${res2.toInt()}
-	""".trimIndent()
-	)
-
-
+	println("s2s1: $s2 $s1 -> res: ${res2.toInt()}")
+	s2.set(true);s1.reset()
+	println("s2s1: $s2 $s1 -> res: ${res2.toInt()}")
 }
