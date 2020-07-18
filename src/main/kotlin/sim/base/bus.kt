@@ -18,6 +18,24 @@ fun bus(vararg value: Value): Bus =
 fun mutableBus(vararg value: MutableValue): MutableBus =
 	listOf(*value)
 
+
+/** set a value to all of a bus lines */
+fun MutableBus.set(value: Value) = this.forEach { it.set(value) }
+
+/** set a bus values to another bus lines */
+fun MutableBus.set(other: Bus) = this.zip(other).forEach { (lhs, rhs) -> lhs.set(rhs) }
+
+/** write a value to all of a bus lines */
+fun Value.writeOn(other: MutableBus) = other.set(this)
+
+/** write bus values to another bus lines */
+fun Bus.writeOn(other: MutableBus) = other.set(this)
+
+
+/** slice and create another bus from a bus */
+fun Bus.slice(from: Int = 0, to: Int = -1) =
+	this.subList(from, if (to >= 0) to else this.size + to + 1)
+
 /** merge some bus to getter */
 fun merge(vararg buses: Bus): Bus =
 	listOf(*buses).flatten()
