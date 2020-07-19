@@ -49,8 +49,8 @@ fun Bus.writeOn(other: MutableBus) = other.set(this)
 
 /** slice and create another bus from a bus */
 @JvmOverloads
-fun Bus.slice(from: Int = 0, to: Int = -1) =
-	this.subList(from, if (to >= 0) to else this.size + to + 1)
+fun <T : Value> List<T>.slice(from: Int = 0, to: Int = -1) =
+	this.subList(from, if (to >= 0) to else this.size + to)
 
 /** merge some bus to getter */
 fun merge(vararg buses: Bus): Bus =
