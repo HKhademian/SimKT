@@ -15,7 +15,7 @@ import sim.println
 
 /** a simple 2 to 1 mux */
 fun mux2(selector: Value, inp0: Value, inp1: Value): Value =
-	(inp0 and selector.not()) or (inp1 and selector)
+	(inp0 and not(selector)) or (inp1 and selector)
 
 /** a simple 2M to M mux */
 fun mux2(selector: Value, inp0: Bus, inp1: Bus): Bus =

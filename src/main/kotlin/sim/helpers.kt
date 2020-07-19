@@ -23,6 +23,7 @@ infix fun Int.pow(other: Number) =
  * shift-left-arth, shift-left-logical,
  * shift-right-arth, shift-right-logical,
  */
+@JvmOverloads
 fun List<Value>.extend(n: Int = 0, shift: Int = 0, signed: Boolean = false, extend: Value = Value.ZERO): List<Value> {
 	val size = this.size
 	val len = if (n > 0) n else size
@@ -43,19 +44,23 @@ fun List<Value>.extend(n: Int = 0, shift: Int = 0, signed: Boolean = false, exte
 
 
 /** zero-extend, default to 32 */
+@JvmOverloads
 fun List<Value>.zeroEx(n: Int = 32) =
 	extend(n = n)
 
 /** one-extend, default to 32 */
+@JvmOverloads
 fun List<Value>.oneEx(n: Int = 32) =
 	extend(n = n, extend = Value.ONE)
 
 /** sign-extend, default to 32 */
+@JvmOverloads
 fun List<Value>.signEx(n: Int = 32) =
 	extend(n = n, signed = true)
 
 
 /** signed, left:+, right:- */
+@JvmOverloads
 fun List<Value>.shift(shift: Int, signed: Boolean = false, n: Int = 0) =
 	extend(n = n, shift = shift, signed = signed)
 
@@ -88,7 +93,7 @@ fun List<Value>.x32signed() =
 
 
 // test abilities
-fun main() {
+internal fun main() {
 	val src = 1374.toBus(12) // 12-bit value list
 	// printing is ltr 0:n
 	// but correct binary is ltr n:0

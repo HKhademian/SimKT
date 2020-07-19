@@ -5,6 +5,7 @@ typealias Bus = List<Value>
 typealias MutableBus = List<MutableValue>
 
 /** creates a n-bit mutable bus to use */
+@JvmOverloads
 fun bus(n: Int = 32): MutableBus =
 	(0 until n).map { Variable() }.toList()
 
@@ -31,6 +32,7 @@ fun Bus.writeOn(other: MutableBus) = other.set(this)
 
 
 /** slice and create another bus from a bus */
+@JvmOverloads
 fun Bus.slice(from: Int = 0, to: Int = -1) =
 	this.subList(from, if (to >= 0) to else this.size + to + 1)
 
@@ -51,5 +53,6 @@ fun Bus.toLong(): Long =
 	this.foldRight(0) { it, acc: Long -> (acc shl 1) or (it.toInt().toLong()) }
 
 /** converts a integer to n-bit list of values */
+@JvmOverloads
 fun Int.toBus(n: Int = 32): Bus =
-	(0 until n).asSequence().map { Constant(this and (1 shl it) != 0, "#$it") }.toList()
+	(0 until n).asSequence().map { Constant((this and (1 shl it)) != 0, "#$it") }.toList()
