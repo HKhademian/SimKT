@@ -1,18 +1,20 @@
 package sim.gates
 
-import sim.base.Bus
-import sim.base.CachedElement
-import sim.base.MultiInputElement
-import sim.base.Value
+import sim.base.*
 
 @PublishedApi
-internal class OrGate(override val inputs: Bus) : CachedElement(false), MultiInputElement {
-	override val title: String
-		get() = "OrGate"
+internal class OrGate(override val inputs: Bus) : SingleComputeElement, MultiInputElement {
+	override val title = "OrGate"
 
-	override fun compute(cache: Value): Value {
+	override fun eval() =
+		inputs.eval()
+
+	override fun compute(): Value {
 		for (inp in inputs)
 			if (inp.get()) return Value.ONE // NOTE: for better performance
 		return Value.ZERO
 	}
+
+	override fun toString() =
+		output.toString()
 }

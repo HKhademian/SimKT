@@ -4,52 +4,55 @@ package sim.base
  * each element in the final simulation is at least an element,
  * it has one `input`, one `output`, can `eval` on each simulation cycle
  */
-interface Element : Value {
-	val input: Value
-		get() = Value.ZERO // may it does not have any inputs!
-	val output: Value
-		get() = Value.ZERO // may it does not have any outputs!
-
+interface Element : Eval {
 	val isSequential: Boolean
 		get() = false
+}
 
-	/**
-	 * if an element is a sequential,
-	 * it needs to cache it's states
-	 * to update it's state-machine
-	 * every time, in each sim cycle
-	 * we use this method to update its
-	 * internal state
-	 */
-	fun eval(): Value =
-		Value.ZERO // default, for comb. circuits
+interface SingleInputElement : Element {
+	val input: Value
+		get() = Value.ZERO // default impl.
+
+	override fun eval() =
+		input.eval()
+}
+
+interface SingleOutputElement : Element, Value {
+	val output: Value
+		get() = Value.ZERO // default impl.
 
 	/**
 	 * each element, at least has a single output,
 	 * this method by default returns its fist output
 	 */
 	override fun get() =
-		output.get()
+		output.get()// default impl.
 }
+
+/**
+ * if an element can handles a input and an output,
+ * like not-gate, we use this type of element which is
+ * both `SingleInputElement` and `SingleOutputElement`
+ */
+interface SingleElement : SingleInputElement, SingleOutputElement
 
 /**
  * if an element can handle n inputs, like and gate
  * we use this type of element to unify all usages
  */
 interface MultiInputElement : Element {
-	val inputs: List<Value>
-	override val input
-		get() = inputs[0] // default impl. just uses first input
+	val inputs: Bus
+
+	override fun eval() =
+		inputs.eval()
 }
 
 /**
  * if an element can handle n outputs, like counters
  * we use this type of element to unify all usages
  */
-interface MultiOutputElement : Element {
-	val outputs: List<Value>
-	override val output
-		get() = outputs[0]  // default impl. just uses first output
+interface MultiOutputElement : Element, Bus {
+	val outputs: Bus
 }
 
 /**
@@ -58,3 +61,4 @@ interface MultiOutputElement : Element {
  * both `MultiInputElement` and `MultiOutputElement`
  */
 interface MultiElement : MultiInputElement, MultiOutputElement
+

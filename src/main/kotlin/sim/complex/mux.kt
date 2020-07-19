@@ -8,17 +8,18 @@ import sim.println
 class MuxN(
 	val selectors: List<Value>,
 	override val inputs: List<Value>
-) : CachedElement(false), MultiInputElement {
+) : MultiInputElement, SingleComputeElement {
 	init {
 		if (inputs.size != 2 pow selectors.size)
 			throw RuntimeException("inputs does not match")
 	}
 
-	override val title: String
-		get() = "Mux"
+	override val title = "Mux"
 
+	override fun eval() =
+		inputs.eval()
 
-	override fun compute(cache: Value): Value {
+	override fun compute(): Value {
 		val select = selectors.toInt()
 		return inputs[select]
 	}

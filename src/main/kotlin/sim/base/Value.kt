@@ -17,7 +17,7 @@ interface Value {
 		false // default impl. just returns 0 logic value
 
 	val title: String
-		get() = "Value"
+		get() = "Value" // default title
 }
 
 /**
@@ -47,14 +47,15 @@ interface MutableValue : Value {
 }
 
 
-class Constant @JvmOverloads constructor(private val value: Boolean, val name: String = "") : Value {
+class Constant @JvmOverloads @PublishedApi internal constructor(private val value: Boolean, val name: String = "") : Value {
 	override fun get() = value
 	override fun toString() = if (value) "1" else "0"
 	override val title: String
 		get() = "<Const>$name"
 }
 
-class Variable @JvmOverloads constructor(private var value: Value = Value.ZERO, val name: String = "") : MutableValue {
+
+class Variable @JvmOverloads @PublishedApi internal constructor(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
 	@JvmOverloads
 	constructor(value: Boolean, name: String = "")
 		: this(value.toValue(), name)
@@ -71,11 +72,30 @@ class Variable @JvmOverloads constructor(private var value: Value = Value.ZERO, 
 
 	override val title: String
 		get() = "<Variable>$name"
+
+	override fun eval() =
+		value.eval()
 }
 
+/** create a constant value */
+@JvmOverloads
+fun const(value: Boolean, name: String = "") =
+	Constant(value, name)
+
+/** create a mutable value */
+@JvmOverloads
+fun mut(value: Boolean = false, name: String = "") =
+	Variable(value, name)
+
+
 /** cache current value, and keep it for ever */
-fun Value.const() =
+@JvmName("constant")
+fun Value.const(): Constant =
 	Constant(get())
+
+/** cache current value, and keep it for ever */
+fun Value.mut(): MutableValue =
+	if (this is MutableValue) this else Variable(get())
 
 /** converts a value to equivalent int */
 fun Value.toInt(): Int =
@@ -90,15 +110,13 @@ fun Boolean.toValue() =
 /** Broadcast every `get` calls to value */
 class ProxyValue(private val value: Value) : Value by value {
 	override fun toString() = value.toString()
-	override val title: String
-		get() = "Proxy"
+	override val title = "Proxy"
 }
 
 /** Broadcast every `set` calls to value */
 class ProxyMutableValue(private val value: MutableValue) : MutableValue by value {
 	override fun toString() = value.toString()
-	override val title: String
-		get() = "MutProxy"
+	override val title = "MutProxy"
 }
 
 /**
@@ -107,6 +125,5 @@ class ProxyMutableValue(private val value: MutableValue) : MutableValue by value
 class ComputeValue(private val compute: () -> Boolean) : Value {
 	override fun get() = compute()
 	override fun toString() = get().toString()
-	override val title: String
-		get() = "Compute"
+	override val title = "Compute"
 }

@@ -4,6 +4,15 @@ typealias Wire = Variable
 typealias Bus = List<Value>
 typealias MutableBus = List<MutableValue>
 
+@JvmField
+val EMPTY_BUS: Bus = listOf()
+
+@JvmField
+val ZERO_BUS: Bus = (0..64).map { Value.ZERO }.toList()
+
+@JvmField
+val ONE_BUS: Bus = (0..64).map { Value.ONE }.toList()
+
 /** creates a n-bit mutable bus to use */
 @JvmOverloads
 fun bus(n: Int = 32): MutableBus =
@@ -16,6 +25,13 @@ fun bus(vararg value: Value): Bus =
 /** create bus of some values */
 fun mutableBus(vararg value: MutableValue): MutableBus =
 	listOf(*value)
+
+
+fun MutableBus.asBus() =
+	this as Bus
+
+fun Bus.asMutableBus() =
+	this as MutableBus
 
 
 /** set a value to all of a bus lines */
@@ -45,6 +61,15 @@ fun mutableMerge(vararg buses: MutableBus): MutableBus =
 	listOf(*buses).flatten()
 
 /** converts a group of values to equivalent int */
+@JvmName("constant")
+fun Bus.const(): Bus =
+	this.map { it.const() }.toList()
+
+/** converts a group of values to equivalent int */
+fun Bus.mut(): MutableBus =
+	this.map { it.mut() }.toList()
+
+/** converts a group of values to equivalent int */
 fun Bus.toInt(): Int =
 	this.foldRight(0) { it, acc: Int -> (acc shl 1) or (it.toInt()) }
 
@@ -52,7 +77,16 @@ fun Bus.toInt(): Int =
 fun Bus.toLong(): Long =
 	this.foldRight(0) { it, acc: Long -> (acc shl 1) or (it.toInt().toLong()) }
 
+/** converts a long to n-bit list of values */
+@JvmOverloads
+fun Long.toBus(n: Int = 32): Bus =
+	(0 until n).asSequence().map { Constant((this and (1L shl it)) != 0L, "#$it") }.toList()
+
 /** converts a integer to n-bit list of values */
 @JvmOverloads
 fun Int.toBus(n: Int = 32): Bus =
-	(0 until n).asSequence().map { Constant((this and (1 shl it)) != 0, "#$it") }.toList()
+	toLong().toBus()
+
+internal fun main() {
+	println(ONE_BUS)
+}

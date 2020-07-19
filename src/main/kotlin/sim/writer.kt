@@ -1,8 +1,8 @@
 package sim
 
 import sim.base.Bus
-import sim.base.Element
 import sim.base.MultiInputElement
+import sim.base.SingleInputElement
 import sim.base.Value
 
 /// pretty write value in buffer
@@ -33,7 +33,7 @@ fun Value.write(
 			writeChild(it, true, childrenPrefix)
 		}
 		writeChild(this.inputs.last(), false, childrenPrefix)
-	} else if (this is Element) {
+	} else if (this is SingleInputElement) {
 		writeChild(this.input, false, childrenPrefix)
 	}
 	return buffer

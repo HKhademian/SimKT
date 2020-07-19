@@ -1,14 +1,17 @@
 package sim.gates
 
-import sim.base.CachedElement
-import sim.base.Value
-import sim.base.toValue
+import sim.base.*
 
 @PublishedApi
-internal class NotGate(override val input: Value) : CachedElement(false) {
-	override val title: String
-		get() = "NotGate"
+internal class NotGate(override val input: Value) : SingleComputeElement, SingleInputElement {
+	override val title = "NotGate"
 
-	override fun compute(cache: Value) =
+	override fun eval() =
+		input.eval()
+
+	override fun compute() =
 		(!input.get()).toValue()
+
+	override fun toString() =
+		output.toString()
 }
