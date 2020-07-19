@@ -47,7 +47,7 @@ interface MutableValue : Value {
 }
 
 
-class Constant @JvmOverloads @PublishedApi internal constructor(private val value: Boolean, val name: String = "") : Value {
+class Constant @PublishedApi internal constructor(private val value: Boolean, val name: String = "") : Value {
 	override fun get() = value
 	override fun toString() = if (value) "1" else "0"
 	override val title: String
@@ -55,9 +55,9 @@ class Constant @JvmOverloads @PublishedApi internal constructor(private val valu
 }
 
 
-class Variable @JvmOverloads @PublishedApi internal constructor(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
-	@JvmOverloads
-	constructor(value: Boolean, name: String = "")
+class Variable @PublishedApi internal constructor(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
+	@PublishedApi
+	internal constructor(value: Boolean, name: String = "")
 		: this(value.toValue(), name)
 
 	override fun get() =
