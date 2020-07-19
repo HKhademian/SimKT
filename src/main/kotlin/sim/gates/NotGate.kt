@@ -4,7 +4,8 @@ import sim.base.CachedElement
 import sim.base.Value
 import sim.base.toValue
 
-class NotGate(override val input: Value) : CachedElement(false) {
+@PublishedApi
+internal class NotGate(override val input: Value) : CachedElement(false) {
 	override val title: String
 		get() = "NotGate"
 

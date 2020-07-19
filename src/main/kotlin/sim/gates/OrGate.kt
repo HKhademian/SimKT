@@ -1,10 +1,12 @@
 package sim.gates
 
-import sim.base.*
+import sim.base.Bus
+import sim.base.CachedElement
+import sim.base.MultiInputElement
+import sim.base.Value
 
-class OrGate(override val inputs: Bus) : CachedElement(false), MultiInputElement {
-	constructor(vararg inputs: Value) : this(bus(*inputs))
-
+@PublishedApi
+internal class OrGate(override val inputs: Bus) : CachedElement(false), MultiInputElement {
 	override val title: String
 		get() = "OrGate"
 

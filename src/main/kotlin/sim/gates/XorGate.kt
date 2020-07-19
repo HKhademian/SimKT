@@ -2,9 +2,8 @@ package sim.gates
 
 import sim.base.*
 
-class XorGate(override val inputs: Bus) : CachedElement(false), MultiInputElement {
-	constructor(vararg inputs: Value) : this(bus(*inputs))
-
+@PublishedApi
+internal class XorGate(override val inputs: Bus) : CachedElement(false), MultiInputElement {
 	override val title: String
 		get() = "XorGate"
 

@@ -7,16 +7,16 @@ import sim.base.Value
 import sim.base.Variable
 import sim.complex.DFlipFlop
 
-//fun main() {
+//internal fun main() {
 //  val A = ConstValue(true)
 //  val B = ConstValue(false)
 //  val C = ConstValue(false)
 //
-//  val res = andg(
+//  val res = and(
 //
-//	org(A.not, B, C),
-//	notg(B),
-//	xorg(B, A)
+//	or(not(A), B, C),
+//	not(B),
+//	xor(B, A)
 //
 //  )
 //
@@ -25,7 +25,7 @@ import sim.complex.DFlipFlop
 //  println("res mux: " + mux2(Value.ONE, A, B))
 //}
 
-fun main() {
+internal fun main() {
 	val data = Variable(Value.ZERO)
 	val clock = Variable(Value.ZERO)
 	val dff = DFlipFlop(data, clock)

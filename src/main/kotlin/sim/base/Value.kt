@@ -24,15 +24,21 @@ interface Value {
  * mutable `Value`, which we can set it's value to what we want
  */
 interface MutableValue : Value {
-	fun set(value: Value = Value.ONE) =
+	fun set(value: Value) =
 		Unit // default impl. just trash the command
 
 	fun set(value: Boolean) =
 		set(value.toValue())
 
+	/** write one */
+	fun set() =
+		set(Value.ONE)
+
+	/** write zero */
 	fun reset() =
 		set(Value.ZERO)
 
+	/** write toggle */
 	fun toggle() =
 		set(!get())
 
@@ -41,14 +47,15 @@ interface MutableValue : Value {
 }
 
 
-class Constant(private val value: Boolean, val name: String = "") : Value {
+class Constant @JvmOverloads constructor(private val value: Boolean, val name: String = "") : Value {
 	override fun get() = value
 	override fun toString() = if (value) "1" else "0"
 	override val title: String
 		get() = "<Const>$name"
 }
 
-class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue {
+class Variable @JvmOverloads constructor(private var value: Value = Value.ZERO, val name: String = "") : MutableValue {
+	@JvmOverloads
 	constructor(value: Boolean, name: String = "")
 		: this(value.toValue(), name)
 
