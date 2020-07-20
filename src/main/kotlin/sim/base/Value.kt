@@ -79,6 +79,7 @@ class Variable @PublishedApi internal constructor(private var value: Value = Val
 
 /** create a constant value */
 @JvmOverloads
+@JvmName("constant")
 fun const(value: Boolean, name: String = "") =
 	Constant(value, name)
 
