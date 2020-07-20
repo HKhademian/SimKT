@@ -9,8 +9,11 @@ package sim.base
  */
 interface Value {
 	companion object {
-		val ZERO = Constant(false, "ZERO")
-		val ONE = Constant(true, "ONE")
+		@JvmField
+		val ZERO: Value = Constant(false, "ZERO")
+
+		@JvmField
+		val ONE: Value = Constant(true, "ONE")
 	}
 
 	fun get(): Boolean =
