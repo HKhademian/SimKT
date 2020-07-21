@@ -83,18 +83,18 @@ class Variable @PublishedApi internal constructor(private var value: Value = Val
 /** create a constant value */
 @JvmOverloads
 @JvmName("constant")
-fun const(value: Boolean, name: String = "") =
+fun const(value: Boolean, name: String = ""): Value =
 	Constant(value, name)
 
 /** create a mutable value */
 @JvmOverloads
-fun mut(value: Boolean = false, name: String = "") =
+fun mut(value: Boolean = false, name: String = ""): MutableValue =
 	Variable(value, name)
 
 
 /** cache current value, and keep it for ever */
 @JvmName("constant")
-fun Value.const(): Constant =
+fun Value.const(): Value =
 	Constant(get())
 
 /** cache current value, and keep it for ever */
@@ -107,7 +107,7 @@ fun Value.toInt(): Int =
 
 
 /** converts a bool to eq value */
-fun Boolean.toValue() =
+fun Boolean.toValue(): Value =
 	if (this) Value.ONE else Value.ZERO
 
 
