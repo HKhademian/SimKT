@@ -26,15 +26,15 @@ class MuxN(
 }
 
 /** select between 2^n inputs */
-fun mux(selector: List<Value>, vararg inputs: Value) =
+fun mux(selector: List<Value>, vararg inputs: Value): Value =
 	MuxN(selector, listOf(*inputs))
 
 /** select between 2 inputs */
-fun mux2(selector: Value, input0: Value, input1: Value) =
+fun mux2(selector: Value, input0: Value, input1: Value): Value =
 	MuxN(listOf(selector), listOf(input0, input1))
 
 /** select between 4 inputs */
-fun mux4(selector0: Value, selector1: Value, input0: Value, input1: Value, input2: Value, input3: Value) =
+fun mux4(selector0: Value, selector1: Value, input0: Value, input1: Value, input2: Value, input3: Value): Value =
 	MuxN(listOf(selector0, selector1), listOf(input0, input1, input2, input3))
 
 
@@ -43,7 +43,7 @@ fun mux4(selector0: Value, selector1: Value, input0: Value, input1: Value, input
  * M: input bus, each bus size
  * N: selector bus size
  */
-fun mux(selector: List<Value>, vararg inputs: Bus) =
+fun mux(selector: List<Value>, vararg inputs: Bus): Bus =
 	inputs.map { MuxN(selector, it) }.toList()
 
 /**
@@ -51,7 +51,7 @@ fun mux(selector: List<Value>, vararg inputs: Bus) =
  * M: input bus, each bus size
  * N: selector bus size
  */
-fun mux2(selector: Value, input0: Bus, input1: Bus) =
+fun mux2(selector: Value, input0: Bus, input1: Bus): Bus =
 	input0.zip(input1).map { (inp0, inp1) -> mux2(selector, inp0, inp1) }.toList()
 
 /**
@@ -59,7 +59,7 @@ fun mux2(selector: Value, input0: Bus, input1: Bus) =
  * M: input bus, each bus size
  * N: selector bus size
  */
-fun mux4(selector0: Value, selector1: Value, input0: Bus, input1: Bus, input2: Bus, input3: Bus) =
+fun mux4(selector0: Value, selector1: Value, input0: Bus, input1: Bus, input2: Bus, input3: Bus): Bus =
 	input0.zip(input1).zip(input2).zip(input3).map { mux4(selector0, selector1, it.first.first.first, it.first.first.second, it.first.second, it.second) }.toList()
 
 
