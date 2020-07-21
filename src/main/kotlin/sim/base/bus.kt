@@ -43,6 +43,9 @@ fun MutableBus.set(value: Value) = this.forEach { it.set(value) }
 /** set a bus values to another bus lines */
 fun MutableBus.set(other: Bus) = this.zip(other).forEach { (lhs, rhs) -> lhs.set(rhs) }
 
+/** set a const value to another bus lines */
+fun MutableBus.set(other: Long) = set(other.toBus(size))
+
 /** write a value to all of a bus lines */
 fun Value.writeOn(other: MutableBus) = other.set(this)
 
