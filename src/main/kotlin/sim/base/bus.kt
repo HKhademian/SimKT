@@ -93,7 +93,7 @@ fun Long.toBus(n: Int = 32): Bus =
 /** converts a integer to n-bit list of values */
 @JvmOverloads
 fun Int.toBus(n: Int = 32): Bus =
-	toLong().toBus()
+	toLong().toBus(n)
 
 internal fun main() {
 	println(ONE_BUS)
