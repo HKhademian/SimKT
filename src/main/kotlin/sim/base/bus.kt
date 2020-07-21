@@ -34,6 +34,9 @@ fun Bus.asMutableBus() =
 	this as MutableBus
 
 
+/** to match MutableBus.set */
+fun set(me: MutableValue, other: Value) = me.set(other)
+
 /** set a value to all of a bus lines */
 fun MutableBus.set(value: Value) = this.forEach { it.set(value) }
 
@@ -51,6 +54,11 @@ fun Bus.writeOn(other: MutableBus) = other.set(this)
 @JvmOverloads
 fun <T : Value> List<T>.slice(from: Int = 0, to: Int = -1) =
 	this.subList(from, if (to >= 0) to else this.size + to)
+
+/** slice and create another bus from a bus */
+@JvmOverloads
+fun <T : Value> List<T>.pick(from: Int = 0, len: Int = -1) =
+	this.subList(from, if (len >= 0) from + len else this.size - 1)
 
 /** merge some bus to getter */
 fun merge(vararg buses: Bus): Bus =
