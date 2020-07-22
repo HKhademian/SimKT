@@ -1,7 +1,6 @@
 package sim.complex
 
 import sim.base.*
-import sim.pow
 import sim.println
 import sim.zipLists
 
@@ -11,7 +10,8 @@ class MuxN(
 	override val inputs: List<Value>
 ) : MultiInputElement, SingleComputeElement {
 	init {
-		if (inputs.size != 2 pow selectors.size)
+		var inputCount = 1 shl selectors.size
+		if (inputs.size != inputCount)
 			throw RuntimeException("inputs does not match")
 	}
 
