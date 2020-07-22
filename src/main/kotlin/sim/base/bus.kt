@@ -1,6 +1,5 @@
 package sim.base
 
-typealias Wire = Variable
 typealias Bus = List<Value>
 typealias MutableBus = List<MutableValue>
 

@@ -58,9 +58,9 @@ class Constant @PublishedApi internal constructor(private val value: Boolean, va
 }
 
 
-class Variable @PublishedApi internal constructor(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
-	@PublishedApi
-	internal constructor(value: Boolean, name: String = "")
+@PublishedApi
+internal class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
+	constructor(value: Boolean, name: String = "")
 		: this(value.toValue(), name)
 
 	override fun get() =

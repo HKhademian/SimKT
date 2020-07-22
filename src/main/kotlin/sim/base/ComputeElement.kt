@@ -24,7 +24,7 @@ interface MultiComputeElement : MultiOutputElement {
 abstract class SingleCachedElement : SingleComputeElement {
 	override val isSequential = true
 
-	protected val cache = Variable(false)
+	protected val cache = mut(false)
 
 	/**
 	 * compute current value, then stores it to cache
