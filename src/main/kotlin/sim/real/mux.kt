@@ -21,6 +21,22 @@ fun mux2(selector: Value, inp0: Value, inp1: Value): Value =
 fun mux2(selector: Value, inp0: Bus, inp1: Bus): Bus =
 	inp0.zip(inp1).map { (inp0, inp1) -> mux2(selector, inp0, inp1) }.toList()
 
+/** a simple 2 to 1 mux */
+fun mux4(selector0: Value, selector1: Value, inp0: Value, inp1: Value, inp2: Value, inp3: Value): Value =
+	mux2(
+		selector1,
+		mux2(selector0, inp0, inp1),
+		mux2(selector0, inp2, inp3)
+	)
+
+/** a simple 4M to M mux */
+fun mux4(selector0: Value, selector1: Value, inp0: Bus, inp1: Bus, inp2: Bus, inp3: Bus): Bus =
+	mux2(
+		selector1,
+		mux2(selector0, inp0, inp1),
+		mux2(selector0, inp2, inp3)
+	)
+
 /**
  * a N to 1 mux
  * recursively forms multiplexer connections

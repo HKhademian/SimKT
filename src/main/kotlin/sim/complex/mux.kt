@@ -3,6 +3,7 @@ package sim.complex
 import sim.base.*
 import sim.pow
 import sim.println
+import sim.zipLists
 
 /** simulated N2One multiplexer */
 class MuxN(
@@ -44,7 +45,7 @@ fun mux4(selector0: Value, selector1: Value, input0: Value, input1: Value, input
  * N: selector bus size
  */
 fun mux(selector: List<Value>, vararg inputs: Bus): Bus =
-	inputs.map { MuxN(selector, it) }.toList()
+	listOf(*inputs).zipLists().map { MuxN(selector, it) }.toList()
 
 /**
  * mux M*2 to M
