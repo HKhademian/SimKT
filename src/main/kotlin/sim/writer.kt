@@ -5,21 +5,30 @@ import sim.base.MultiInputElement
 import sim.base.SingleInputElement
 import sim.base.Value
 
-/// pretty write value in buffer
-fun Value.write(
+/** every class that support beautiful custom debug print, must implements this */
+interface DebugWriter {
+	fun writeDebug(buffer: StringBuffer)
+}
+
+/** pretty write value in buffer */
+fun Any.debugWrite(
 	buffer: StringBuffer = StringBuffer(),
 	prefix: String = "",
 	childrenPrefix: String = ""
 ): StringBuffer {
 	buffer.append(prefix)
-	buffer.append(title)
+	when (this) {
+		is DebugWriter -> this.writeDebug(buffer)
+		is Value -> buffer.append(title)
+		else -> buffer.append(this.toString())
+	}
 	buffer.append("\n")
 
 	fun writeChild(child: Value?, hasNext: Boolean, childrenPrefix: String): StringBuffer {
 		val pref = childrenPrefix + if (hasNext) "├─── " else "└─── "
 		return if (child != null) {
 			val childPref = childrenPrefix + if (hasNext) "│    " else "     "
-			child.write(buffer, pref, childPref)
+			child.debugWrite(buffer, pref, childPref)
 		} else {
 			buffer.append(pref)
 			buffer.append("{null}")
@@ -40,7 +49,7 @@ fun Value.write(
 }
 
 fun Value.println() =
-	println(write())
+	println(debugWrite())
 
 fun Bus.println() =
 	forEach { it.println() }
