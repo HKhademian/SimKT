@@ -7,6 +7,7 @@ import sim.base.Value
 
 /** every class that support beautiful custom debug print, must implements this */
 interface DebugWriter {
+	/** this method write a pretty debug information about object to given buffer */
 	fun writeDebug(buffer: StringBuffer)
 }
 
