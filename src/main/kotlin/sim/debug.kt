@@ -11,6 +11,18 @@ interface DebugWriter {
 	fun writeDebug(buffer: StringBuffer)
 }
 
+fun DebugWriter.println() =
+	println(debugWrite())
+
+fun Value.println() =
+	println(debugWrite())
+
+fun Bus.println() =
+	forEach { it.println() }
+
+fun Any.println() =
+	println(debugWrite())
+
 /** pretty write value in buffer */
 fun Any.debugWrite(
 	buffer: StringBuffer = StringBuffer(),
@@ -48,9 +60,3 @@ fun Any.debugWrite(
 	}
 	return buffer
 }
-
-fun Value.println() =
-	println(debugWrite())
-
-fun Bus.println() =
-	forEach { it.println() }

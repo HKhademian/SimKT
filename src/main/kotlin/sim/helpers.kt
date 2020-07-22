@@ -5,9 +5,6 @@ import sim.base.toBus
 import sim.base.toInt
 import kotlin.math.pow
 
-infix fun Int.pow(other: Number) =
-	this.toDouble().pow(other.toDouble()).toInt()
-
 /**
  * this method provides:
  * 1. sign/zero/one extention: when provide `n` value

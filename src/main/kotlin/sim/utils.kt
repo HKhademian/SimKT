@@ -3,6 +3,11 @@
 
 package sim
 
+import kotlin.math.pow
+
+infix fun Int.pow(other: Number) =
+	this.toDouble().pow(other.toDouble()).toInt()
+
 /**
  * Returns a list of lists, each built from elements of all lists with the same indexes.
  * Output has length of shortest input list.
