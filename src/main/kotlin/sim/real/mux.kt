@@ -1,9 +1,9 @@
 package sim.real
 
 import sim.base.*
-import sim.gates.and
-import sim.gates.not
-import sim.gates.or
+import sim.base.and
+import sim.base.not
+import sim.base.or
 import sim.println
 
 // hear I just try to implement real mux

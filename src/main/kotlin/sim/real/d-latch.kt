@@ -2,9 +2,9 @@ package sim.real
 
 import sim.base.SingleCachedElement
 import sim.base.Value
-import sim.gates.and
-import sim.gates.nor
-import sim.gates.not
+import sim.base.and
+import sim.base.nor
+import sim.base.not
 
 class DLatch(
 	val data: Value,

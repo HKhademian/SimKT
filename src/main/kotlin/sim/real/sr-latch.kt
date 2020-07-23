@@ -2,8 +2,8 @@ package sim.real
 
 import sim.base.SingleCachedElement
 import sim.base.Value
-import sim.gates.and
-import sim.gates.nor
+import sim.base.and
+import sim.base.nor
 
 class SRLatch(
 	val set: Value,
