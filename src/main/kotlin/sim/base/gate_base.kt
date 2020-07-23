@@ -4,10 +4,7 @@
 
 package sim.base
 
-private open class Gate(override val title: String, private val computer: () -> Boolean) : Value {
-	override fun toString() = get().toString()
-	override fun get(): Boolean = computer()
-}
+private typealias Gate = SimpleElement
 
 private class NotGate(override val input: Value) : SingleInputElement, Gate("Not", {
 	(!input.get())

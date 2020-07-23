@@ -4,6 +4,7 @@
 
 package sim.expriment
 
+import sim.base.LockElement
 import sim.base.MultiInputElement
 import sim.base.SingleInputElement
 import sim.base.Value
@@ -11,21 +12,7 @@ import sim.base.Value.Companion.ONE
 import sim.base.Value.Companion.ZERO
 import sim.test.test
 
-open class Gate(override val title: String, private val compute: () -> Boolean) : Value {
-	override fun toString() = get().toString()
-
-	private var lock = false
-	private var cache = false
-
-	override fun get(): Boolean = synchronized(lock) {
-		if (!lock) {
-			lock = true
-			cache = compute()
-			lock = false
-		}
-		return@synchronized cache
-	}
-}
+private typealias Gate = LockElement
 
 private class NotGate(override val input: Value) : SingleInputElement, Gate("Not", {
 	!input.get()

@@ -16,8 +16,8 @@ interface Eval {
 
 fun Any?.eval(time: Long): Unit = when (this) {
 	is Eval -> this.eval(time)
-	is SingleInputElement -> input.eval(time)
-	is MultiInputElement -> inputs.eval(time)
+//	is SingleInputElement -> input.eval(time)
+//	is MultiInputElement -> inputs.eval(time)
 	is Iterable<*> -> forEach { it.eval(time) } ?: Unit
 	else -> Unit
 }

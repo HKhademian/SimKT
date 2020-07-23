@@ -5,7 +5,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import sim.base.Value
 import sim.base.Variable
-import sim.complex.DFlipFlop
+//import sim.complex.DFlipFlop
 
 //internal fun main() {
 //  val A = ConstValue(true)
@@ -28,7 +28,7 @@ import sim.complex.DFlipFlop
 internal fun main() {
 	val data = Variable(Value.ZERO)
 	val clock = Variable(Value.ZERO)
-	val dff = DFlipFlop(data, clock)
+//	val dff = DFlipFlop(data, clock)
 
 	runBlocking {
 
@@ -48,11 +48,11 @@ internal fun main() {
 			}
 		}
 
-		while (true) {
-			dff.eval(System.currentTimeMillis())
-			println("dff: $dff")
-			delay(900)
-		}
+//		while (true) {
+//			dff.eval(System.currentTimeMillis())
+//			println("dff: $dff")
+//			delay(900)
+//		}
 
 
 	}

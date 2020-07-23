@@ -50,7 +50,7 @@ interface MutableValue : Value {
 }
 
 
-class Constant @PublishedApi internal constructor(private val value: Boolean, val name: String = "") : Value {
+private class Constant constructor(private val value: Boolean, val name: String = "") : Value {
 	override fun get() = value
 	override fun toString() = if (value) "1" else "0"
 	override val title: String
@@ -58,8 +58,7 @@ class Constant @PublishedApi internal constructor(private val value: Boolean, va
 }
 
 
-@PublishedApi
-internal class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
+private class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
 	override fun get() =
 		value.get()
 
@@ -73,8 +72,8 @@ internal class Variable(private var value: Value = Value.ZERO, val name: String 
 	override val title: String
 		get() = "<Variable>$name"
 
-	override fun eval(time: Long) =
-		value.eval(time)
+//	override fun eval(time: Long) =
+//		value.eval(time)
 }
 
 /** create a constant value */
@@ -110,23 +109,23 @@ fun Boolean.toValue(): Value =
 	if (this) Value.ONE else Value.ZERO
 
 
-/** Broadcast every `get` calls to value */
-class ProxyValue(private val value: Value) : Value by value {
-	override fun toString() = value.toString()
-	override val title = "Proxy"
-}
+///** Broadcast every `get` calls to value */
+//class ProxyValue(private val value: Value) : Value by value {
+//	override fun toString() = value.toString()
+//	override val title = "Proxy"
+//}
 
-/** Broadcast every `set` calls to value */
-class ProxyMutableValue(private val value: MutableValue) : MutableValue by value {
-	override fun toString() = value.toString()
-	override val title = "MutProxy"
-}
+///** Broadcast every `set` calls to value */
+//class ProxyMutableValue(private val value: MutableValue) : MutableValue by value {
+//	override fun toString() = value.toString()
+//	override val title = "MutProxy"
+//}
 
-/**
- * a `ComputeValue` is like normal one, but it evaluate it's value by computing it, each time
- */
-class ComputeValue(private val compute: () -> Boolean) : Value {
-	override fun get() = compute()
-	override fun toString() = get().toString()
-	override val title = "Compute"
-}
+///**
+// * a `ComputeValue` is like normal one, but it evaluate it's value by computing it, each time
+// */
+//class ComputeValue(private val compute: () -> Boolean) : Value {
+//	override fun get() = compute()
+//	override fun toString() = get().toString()
+//	override val title = "Compute"
+//}

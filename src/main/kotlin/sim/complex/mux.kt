@@ -8,22 +8,18 @@ import sim.zipLists
 class MuxN(
 	val selectors: List<Value>,
 	override val inputs: List<Value>
-) : MultiInputElement, SingleComputeElement {
+) : MultiInputElement, ValueElement("Mux", {
+	val select = selectors.toInt()
+	inputs[select]
+}) {
 	init {
 		var inputCount = 1 shl selectors.size
 		if (inputs.size != inputCount)
 			throw RuntimeException("inputs does not match")
 	}
 
-	override val title = "Mux"
-
-	override fun eval(time: Long) =
-		inputs.eval(time)
-
-	override fun compute(): Value {
-		val select = selectors.toInt()
-		return inputs[select]
-	}
+//	override fun eval(time: Long) =
+//		inputs.eval(time)
 }
 
 /** select between 2^n inputs */

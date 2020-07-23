@@ -1,11 +1,6 @@
 package sim.real
 
-import sim.base.MutableValue
-import sim.base.Value
-import sim.base.mut
-import sim.base.and
-import sim.base.or
-import sim.base.xor
+import sim.base.*
 
 /** attention: return values are lazy calculated */
 fun halfAdder(A: Value, B: Value, res: MutableValue, carry: MutableValue) {
