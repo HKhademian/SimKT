@@ -68,8 +68,8 @@ internal fun main() {
 	val B = 99.toBus(16)
 	val C = 11.toBus(16)
 	val D = 49.toBus(16)
-	val s1 = Variable(false, "S1")
-	val s2 = Variable(false, "S2")
+	val s1 = mut(false, "S1")
+	val s2 = mut(false, "S2")
 
 	println(
 		"""

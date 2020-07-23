@@ -60,9 +60,6 @@ class Constant @PublishedApi internal constructor(private val value: Boolean, va
 
 @PublishedApi
 internal class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
-	constructor(value: Boolean, name: String = "")
-		: this(value.toValue(), name)
-
 	override fun get() =
 		value.get()
 
@@ -88,18 +85,20 @@ fun const(value: Boolean, name: String = ""): Value =
 
 /** create a mutable value */
 @JvmOverloads
-fun mut(value: Boolean = false, name: String = ""): MutableValue =
-	Variable(value, name)
+fun mut(value: Boolean, name: String = ""): MutableValue =
+	Variable(value.toValue(), name)
 
 
 /** cache current value, and keep it for ever */
 @JvmName("constant")
-fun Value.const(): Value =
+fun Value.toConst(): Value =
 	Constant(get())
 
 /** cache current value, and keep it for ever */
-fun Value.mut(): MutableValue =
-	if (this is MutableValue) this else Variable(get())
+@JvmName("mut")
+fun Value.toMut(): MutableValue =
+	if (this is MutableValue) this
+	else Variable(get().toValue(), title)
 
 /** converts a value to equivalent int */
 fun Value.toInt(): Int =

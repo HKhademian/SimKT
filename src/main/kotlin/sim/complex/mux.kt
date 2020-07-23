@@ -67,7 +67,7 @@ fun mux4(selector0: Value, selector1: Value, input0: Bus, input1: Bus, input2: B
 internal fun main() {
 	val A = 74.toBus(16)
 	val B = 99.toBus(16)
-	val s = Variable(false)
+	val s = mut(false)
 
 	val res = mux2(s, A, B)
 

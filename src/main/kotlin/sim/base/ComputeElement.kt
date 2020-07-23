@@ -31,7 +31,7 @@ abstract class SingleCachedElement : SingleComputeElement {
 	 * NOTE: eval inputs first
 	 */
 	override fun eval() =
-		compute().const().let(cache::set)
+		compute().toConst().let(cache::set)
 
 	override val output: Value
 		get() = cache

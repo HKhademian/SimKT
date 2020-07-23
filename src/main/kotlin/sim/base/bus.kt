@@ -75,12 +75,12 @@ fun mutableMerge(vararg buses: MutableBus): MutableBus =
 
 /** converts a group of values to equivalent int */
 @JvmName("constant")
-fun Bus.const(): Bus =
-	this.map { it.const() }.toList()
+fun Bus.toConst(): Bus =
+	this.map { it.toConst() }.toList()
 
 /** converts a group of values to equivalent int */
-fun Bus.mut(): MutableBus =
-	this.map { it.mut() }.toList()
+fun Bus.toMut(): MutableBus =
+	this.map { it.toMut() }.toList()
 
 /** converts a group of values to equivalent int */
 fun Bus.toInt(): Int =
