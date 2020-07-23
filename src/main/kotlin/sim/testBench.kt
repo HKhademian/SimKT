@@ -49,7 +49,7 @@ internal fun main() {
 		}
 
 		while (true) {
-			dff.eval()
+			dff.eval(System.currentTimeMillis())
 			println("dff: $dff")
 			delay(900)
 		}

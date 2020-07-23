@@ -17,8 +17,8 @@ class MuxN(
 
 	override val title = "Mux"
 
-	override fun eval() =
-		inputs.eval()
+	override fun eval(time: Long) =
+		inputs.eval(time)
 
 	override fun compute(): Value {
 		val select = selectors.toInt()

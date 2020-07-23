@@ -10,16 +10,14 @@ package sim.base
  * internal state
  */
 interface Eval {
-	fun eval() =
+	fun eval(time: Long) =
 		Unit // default, for comb. circuits
 }
 
-fun Value?.eval(): Unit = when (this) {
-	is Eval -> this.eval()
-	is SingleInputElement -> input.eval()
-	is MultiInputElement -> inputs.eval()
+fun Any?.eval(time: Long): Unit = when (this) {
+	is Eval -> this.eval(time)
+	is SingleInputElement -> input.eval(time)
+	is MultiInputElement -> inputs.eval(time)
+	is Iterable<*> -> forEach { it.eval(time) } ?: Unit
 	else -> Unit
 }
-
-fun Bus?.eval(): Unit =
-	this?.forEach { it.eval() } ?: Unit

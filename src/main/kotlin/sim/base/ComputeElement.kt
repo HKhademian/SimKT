@@ -30,7 +30,7 @@ abstract class SingleCachedElement : SingleComputeElement {
 	 * compute current value, then stores it to cache
 	 * NOTE: eval inputs first
 	 */
-	override fun eval() =
+	override fun eval(time: Long) =
 		compute().toConst().let(cache::set)
 
 	override val output: Value

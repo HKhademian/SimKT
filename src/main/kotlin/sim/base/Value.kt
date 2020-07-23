@@ -73,8 +73,8 @@ internal class Variable(private var value: Value = Value.ZERO, val name: String 
 	override val title: String
 		get() = "<Variable>$name"
 
-	override fun eval() =
-		value.eval()
+	override fun eval(time: Long) =
+		value.eval(time)
 }
 
 /** create a constant value */

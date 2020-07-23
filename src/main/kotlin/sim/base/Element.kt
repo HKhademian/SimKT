@@ -13,8 +13,8 @@ interface SingleInputElement : Element {
 	val input: Value
 		get() = Value.ZERO // default impl.
 
-	override fun eval() =
-		input.eval()
+	override fun eval(time: Long) =
+		input.eval(time)
 }
 
 interface SingleOutputElement : Element, Value {
@@ -43,8 +43,8 @@ interface SingleElement : SingleInputElement, SingleOutputElement
 interface MultiInputElement : Element {
 	val inputs: Bus
 
-	override fun eval() =
-		inputs.eval()
+	override fun eval(time: Long) =
+		inputs.eval(time)
 }
 
 /**

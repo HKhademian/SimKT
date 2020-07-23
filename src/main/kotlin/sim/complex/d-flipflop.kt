@@ -14,10 +14,10 @@ class DFlipFlop(
 
 	private val prevClock = mut(false)
 
-	override fun eval() {
-		(data as? Element)?.eval()
-		(clock as? Element)?.eval()
-		super.eval()
+	override fun eval(time: Long) {
+		(data as? Element)?.eval(time)
+		(clock as? Element)?.eval(time)
+		super.eval(time)
 	}
 
 	override fun compute(): Value {
