@@ -29,6 +29,7 @@ fun mutableBus(vararg value: MutableValue): MutableBus =
 fun MutableBus.asBus() =
 	this as Bus
 
+@Suppress("UNCHECKED_CAST")
 fun Bus.asMutableBus() =
 	this as MutableBus
 

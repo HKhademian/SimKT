@@ -5,9 +5,9 @@ import java.util.function.Consumer
 
 inline fun <T> measureNanoTime(crossinline task: () -> T): Pair<Long, T> {
 	val start = System.nanoTime()
-	val res = task()
+	val res: T = task()
 	val end = System.nanoTime()
-	val diff = end - start
+	val diff: Long = end - start
 	return diff to res
 }
 
@@ -20,7 +20,7 @@ inline fun <T> measureTime(crossinline task: () -> T): Pair<Long, T> {
 }
 
 @JvmSynthetic
-inline fun tester(msg: String, crossinline task: () -> Any? = {}) {
+inline fun test(msg: String, crossinline task: () -> Any? = {}) {
 	println("***** $msg *****")
 	val (takes, res) = measureTime(task)
 	if (res != null) print(res.debugWrite())
@@ -29,7 +29,7 @@ inline fun tester(msg: String, crossinline task: () -> Any? = {}) {
 
 @JvmSynthetic
 fun testOn(target: Any?, msg: String = "sim/test", task: (() -> Unit)?) =
-	tester(msg) { task?.invoke(); target }
+	test(msg) { task?.invoke(); target }
 
 @JvmSynthetic
 fun <T> test(init: () -> T, msg: String = "sim/test", task: ((T) -> Unit)? = null): T =
@@ -37,9 +37,11 @@ fun <T> test(init: () -> T, msg: String = "sim/test", task: ((T) -> Unit)? = nul
 
 
 @JvmOverloads
-fun testOn(target: Any?, msg: String = "sim/test", task: Runnable?) =
-	tester(msg) { task?.run(); target }
+@JvmName("testOn")
+fun jvmTestOn(target: Any?, msg: String = "sim/test", task: Runnable?) =
+	test(msg) { task?.run(); target }
 
 @JvmOverloads
-fun <T> test(init: () -> T, msg: String = "sim/test", task: Consumer<T>? = null): T =
-	init().also { testOn(it, msg, Runnable { task?.accept(it) }) }
+@JvmName("test")
+fun <T> jvmTest(init: () -> T, msg: String = "sim/test", task: Consumer<T>? = null): T =
+	init().also { testOn(it, msg) { task?.accept(it) } }
