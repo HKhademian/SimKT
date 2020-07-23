@@ -12,9 +12,9 @@ inline fun <T> measureNanoTime(crossinline task: () -> T): Pair<Long, T> {
 }
 
 inline fun <T> measureTime(crossinline task: () -> T): Pair<Long, T> {
-	val start = System.nanoTime()
+	val start = System.currentTimeMillis()
 	val res = task()
-	val end = System.nanoTime()
+	val end = System.currentTimeMillis()
 	val diff = end - start
 	return diff to res
 }
@@ -23,7 +23,7 @@ inline fun <T> measureTime(crossinline task: () -> T): Pair<Long, T> {
 inline fun test(msg: String, crossinline task: () -> Any? = {}) {
 	println("***** $msg *****")
 	val (takes, res) = measureTime(task)
-	if (res != null) print(res.debugWrite())
+	if (res != null && res != Unit) print(res.debugWrite())
 	println("***** takes: $takes ms *****\n")
 }
 
