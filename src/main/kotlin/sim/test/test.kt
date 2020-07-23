@@ -3,29 +3,25 @@ package sim.test
 import sim.debugWrite
 import java.util.function.Consumer
 
-inline fun <T> measureNanoTime(crossinline task: () -> T): Pair<Long, T> {
-	val start = System.nanoTime()
+inline fun <T> measure(crossinline task: () -> T): Pair<Pair<Long, Long>, T> {
+	val startMs = System.currentTimeMillis()
+	val startTick = System.nanoTime()
 	val res: T = task()
-	val end = System.nanoTime()
-	val diff: Long = end - start
-	return diff to res
-}
-
-inline fun <T> measureTime(crossinline task: () -> T): Pair<Long, T> {
-	val start = System.currentTimeMillis()
-	val res = task()
-	val end = System.currentTimeMillis()
-	val diff = end - start
-	return diff to res
+	val endTick = System.nanoTime()
+	val endMs = System.currentTimeMillis()
+	val diffTick: Long = endTick - startTick
+	val diffMs: Long = endMs - startMs
+	return (diffTick to diffMs) to res
 }
 
 @JvmOverloads
 @JvmName("test")
 inline fun test(msg: String, crossinline task: (() -> Any?) = {}) {
 	println("***** $msg *****")
-	val (takes, res) = measureTime(task)
+	val (takes, res) = measure(task)
+	val (ticks, milis) = takes
 	if (res != null && res != Unit) print(res.debugWrite())
-	println("***** takes: $takes ms *****\n")
+	println("***** takes: $milis ms and $ticks cycles *****\n")
 }
 
 @JvmSynthetic
