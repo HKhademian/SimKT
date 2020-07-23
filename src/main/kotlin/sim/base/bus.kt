@@ -18,12 +18,24 @@ fun bus(n: Int = 32): MutableBus =
 	(0 until n).map { Variable() }.toList()
 
 /** create bus of some values */
-fun bus(vararg value: Value): Bus =
-	listOf(*value)
+fun bus(vararg values: Value): Bus =
+	listOf(*values)
 
 /** create bus of some values */
-fun mutableBus(vararg value: MutableValue): MutableBus =
-	listOf(*value)
+fun bus(vararg values: Boolean): Bus =
+	values.map { it.toValue() }
+
+/** create MutableBus of some values */
+fun mutableBus(vararg values: MutableValue): MutableBus =
+	listOf(*values)
+
+/** create MutableBus of some values */
+fun mutableBus(vararg values: Value): MutableBus =
+	values.map { it.toMut() }
+
+/** create MutableBus of some values */
+fun mutableBus(vararg values: Boolean): MutableBus =
+	values.map { it.toValue().toMut() }
 
 
 fun MutableBus.asBus() =
