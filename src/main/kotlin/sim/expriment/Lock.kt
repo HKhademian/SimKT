@@ -6,27 +6,23 @@ import sim.base.Value
 import sim.base.mut
 import java.io.Closeable
 
-internal class Lock : Closeable {
+class SimpleLock : Closeable {
 	var isLock = false; private set
 
-	fun lock(): Lock = this.also { isLock = true }
+	fun <T> lock(task: () -> T): T? =
+		if (isLock) null else this.use { isLock = true; task() }
 
 	override fun close() {
 		isLock = false
 	}
-
-	inline fun <T> eval(crossinline task: () -> T): T? =
-		if (isLock) null
-		else lock().use { task() }
-
 }
 
 open class LockElement : Element, SingleOutputElement {
-	private val lock = Lock()
+	private val lock = SimpleLock()
 	private val cache = mut(false, "cache")
 
 	override val output
-		get() = lock.eval(this::compute)?.also(cache::set) ?: cache
+		get() = lock.lock(this::compute)?.also(cache::set) ?: cache
 
 	open fun compute(): Value =
 		Value.ZERO

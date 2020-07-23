@@ -29,12 +29,12 @@ inline fun test(msg: String, crossinline task: (() -> Any?) = {}) {
 }
 
 @JvmSynthetic
-fun testOn(target: Any?, msg: String = "sim/test", task: (() -> Unit)?) =
-	test(msg) { task?.invoke(); target }
+fun testOn(target: Any?, msg: String = "sim/test", task: (() -> Unit) = { }) =
+	test(msg) { task.invoke(); target }
 
 @JvmSynthetic
-fun <T> test(init: () -> T, msg: String = "sim/test", task: ((T) -> Unit)? = null): T =
-	init().also { testOn(it, msg) { task?.invoke(it) } }
+fun <T> test(init: () -> T, msg: String = "sim/test", task: ((T) -> Unit) = { }): T =
+	init().also { testOn(it, msg) { task.invoke(it) } }
 
 
 @JvmOverloads
