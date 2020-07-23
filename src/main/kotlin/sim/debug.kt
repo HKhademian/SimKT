@@ -1,15 +1,7 @@
 package sim
 
-import sim.base.Bus
-import sim.base.MultiInputElement
-import sim.base.SingleInputElement
-import sim.base.Value
+import sim.base.*
 
-/** every class that support beautiful custom debug print, must implements this */
-interface DebugWriter {
-	/** this method write a pretty debug information about object to given buffer */
-	fun writeDebug(buffer: StringBuffer)
-}
 
 fun DebugWriter.println() =
 	println(debugWrite())
@@ -23,6 +15,19 @@ fun Bus.println() =
 fun Any.println() =
 	println(debugWrite())
 
+/** every class that support beautiful custom debug print, must implements this */
+interface DebugWriter {
+	/** this method write a pretty debug information about object to given buffer */
+	fun writeDebug(buffer: StringBuffer)
+}
+
+private fun Value.writeTo(buffer: StringBuffer) =
+	buffer.append("$title=${toInt()}")
+
+private fun DebugWriter.writeTo(buffer: StringBuffer) =
+	this.writeDebug(buffer)
+
+
 /** pretty write value in buffer */
 fun Any.debugWrite(
 	buffer: StringBuffer = StringBuffer(),
@@ -31,8 +36,8 @@ fun Any.debugWrite(
 ): StringBuffer {
 	buffer.append(prefix)
 	when (this) {
-		is DebugWriter -> this.writeDebug(buffer)
-		is Value -> buffer.append(title)
+		is DebugWriter -> writeTo(buffer)
+		is Value -> writeTo(buffer)
 		else -> buffer.append(this.toString())
 	}
 	buffer.append("\n")
