@@ -14,8 +14,12 @@ interface Eval {
 		Unit // default, for comb. circuits
 }
 
-fun Value?.eval(): Unit =
-	(this as? Eval)?.eval() ?: Unit
+fun Value?.eval(): Unit = when (this) {
+	is Eval -> this.eval()
+	is SingleInputElement -> input.eval()
+	is MultiInputElement -> inputs.eval()
+	else -> Unit
+}
 
 fun Bus?.eval(): Unit =
 	this?.forEach { it.eval() } ?: Unit
