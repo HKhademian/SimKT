@@ -15,7 +15,7 @@ val ONE_BUS: Bus = (0..64).map { Value.ONE }.toList()
 /** creates a n-bit mutable bus to use */
 @JvmOverloads
 fun bus(n: Int = 32): MutableBus =
-	(0 until n).map { Variable() }.toList()
+	(0 until n).map { mut(false) }.toList()
 
 /** create bus of some values */
 fun bus(vararg values: Value): Bus =
@@ -109,7 +109,7 @@ fun Bus.toLong(): Long =
 /** converts a long to n-bit list of values */
 @JvmOverloads
 fun Long.toBus(n: Int = 32): Bus =
-	(0 until n).asSequence().map { Constant((this and (1L shl it)) != 0L, "#$it") }.toList()
+	(0 until n).asSequence().map { const((this and (1L shl it)) != 0L, "#$it") }.toList()
 
 /** converts a integer to n-bit list of values */
 @JvmOverloads
