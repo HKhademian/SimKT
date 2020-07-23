@@ -19,8 +19,9 @@ inline fun <T> measureTime(crossinline task: () -> T): Pair<Long, T> {
 	return diff to res
 }
 
-@JvmSynthetic
-inline fun test(msg: String, crossinline task: () -> Any? = {}) {
+@JvmOverloads
+@JvmName("test")
+inline fun test(msg: String, crossinline task: (() -> Any?) = {}) {
 	println("***** $msg *****")
 	val (takes, res) = measureTime(task)
 	if (res != null && res != Unit) print(res.debugWrite())
@@ -38,7 +39,7 @@ fun <T> test(init: () -> T, msg: String = "sim/test", task: ((T) -> Unit)? = nul
 
 @JvmOverloads
 @JvmName("testOn")
-fun jvmTestOn(target: Any?, msg: String = "sim/test", task: Runnable?) =
+fun jvmTestOn(target: Any?, msg: String = "sim/test", task: Runnable? = null) =
 	test(msg) { task?.run(); target }
 
 @JvmOverloads

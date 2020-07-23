@@ -37,6 +37,9 @@ fun Bus.asMutableBus() =
 /** to match MutableBus.set */
 fun set(me: MutableValue, other: Value) = me.set(other)
 
+/** to match MutableBus.set */
+fun set(me: MutableValue, other: Boolean) = me.set(other)
+
 /** set a value to all of a bus lines */
 fun MutableBus.set(value: Value) = this.forEach { it.set(value) }
 

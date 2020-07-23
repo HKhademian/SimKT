@@ -92,7 +92,7 @@ fun mut(value: Boolean, name: String = ""): MutableValue =
 /** cache current value, and keep it for ever */
 @JvmName("constant")
 fun Value.toConst(): Value =
-	Constant(get())
+	get().toValue()
 
 /** cache current value, and keep it for ever */
 @JvmName("mut")
