@@ -67,7 +67,7 @@ private class Variable(private var value: Value = Value.ZERO, val name: String =
 	}
 
 	override fun toString() =
-		value.toString()
+		if (value.get()) "1" else "0"
 
 	override val title: String
 		get() = "<Variable>$name"
