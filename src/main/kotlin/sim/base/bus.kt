@@ -82,11 +82,7 @@ fun <T : Value> List<T>.pick(from: Int = 0, len: Int = -1) =
 	this.subList(from, if (len >= 0) from + len else this.size - 1)
 
 /** merge some bus to getter */
-fun merge(vararg buses: Bus): Bus =
-	listOf(*buses).flatten()
-
-/** merge some mutable bus to getter */
-fun mutableMerge(vararg buses: MutableBus): MutableBus =
+fun <T : Value> merge(vararg buses: List<T>): List<T> =
 	listOf(*buses).flatten()
 
 /** converts a group of values to equivalent int */
