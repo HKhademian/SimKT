@@ -2,16 +2,6 @@ package sim
 
 import sim.base.*
 
-
-fun DebugWriter.println() =
-	println(debugWrite())
-
-fun Value.println() =
-	println(debugWrite())
-
-fun Bus.println() =
-	forEach { it.println() }
-
 fun Any.println() =
 	println(debugWrite())
 
@@ -21,10 +11,10 @@ interface DebugWriter {
 	fun writeDebug(buffer: StringBuffer)
 }
 
-private fun Value.writeTo(buffer: StringBuffer) =
+fun Value.writeTo(buffer: StringBuffer): StringBuffer =
 	buffer.append("$title=${toInt()}")
 
-private fun DebugWriter.writeTo(buffer: StringBuffer) =
+fun DebugWriter.writeTo(buffer: StringBuffer) =
 	this.writeDebug(buffer)
 
 
