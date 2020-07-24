@@ -8,7 +8,7 @@ import sim.base.Bus
 import sim.base.Value
 import sim.base.const
 import sim.base.mut
-import sim.test.test
+import sim.tool.test
 
 inline fun Bus.not() = this.map { not(it) }.toList()
 

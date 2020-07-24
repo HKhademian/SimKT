@@ -1,6 +1,6 @@
-package sim.test
+package sim.tool
 
-import sim.debugWrite
+import sim.tool.debugWrite
 import java.util.function.Consumer
 
 inline fun <T> measure(crossinline task: () -> T): Pair<Pair<Long, Long>, T> {
@@ -25,20 +25,20 @@ inline fun test(msg: String, crossinline task: (() -> Any?) = {}) {
 }
 
 @JvmSynthetic
-fun testOn(target: Any?, msg: String = "sim/test", task: (() -> Unit) = { }) =
+fun testOn(target: Any?, msg: String = "sim/tool", task: (() -> Unit) = { }) =
 	test(msg) { task.invoke(); target }
 
 @JvmSynthetic
-fun <T> test(init: () -> T, msg: String = "sim/test", task: ((T) -> Unit) = { }): T =
+fun <T> test(init: () -> T, msg: String = "sim/tool", task: ((T) -> Unit) = { }): T =
 	init().also { testOn(it, msg) { task.invoke(it) } }
 
 
 @JvmOverloads
 @JvmName("testOn")
-fun jvmTestOn(target: Any?, msg: String = "sim/test", task: Runnable? = null) =
+fun jvmTestOn(target: Any?, msg: String = "sim/tool", task: Runnable? = null) =
 	test(msg) { task?.run(); target }
 
 @JvmOverloads
 @JvmName("test")
-fun <T> jvmTest(init: () -> T, msg: String = "sim/test", task: Consumer<T>? = null): T =
+fun <T> jvmTest(init: () -> T, msg: String = "sim/tool", task: Consumer<T>? = null): T =
 	init().also { testOn(it, msg) { task?.accept(it) } }

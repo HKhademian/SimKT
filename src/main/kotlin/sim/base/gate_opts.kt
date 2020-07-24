@@ -4,7 +4,7 @@
 
 package sim.base
 
-import sim.test.test
+import sim.tool.test
 
 inline fun Bus.not() = this.map { not(it) }.toList()
 

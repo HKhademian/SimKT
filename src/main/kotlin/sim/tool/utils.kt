@@ -1,7 +1,7 @@
 /// src: https://stackoverflow.com/a/50078501/1803735
 @file:Suppress("NOTHING_TO_INLINE", "RedundantVisibilityModifier")
 
-package sim
+package sim.tool
 
 import kotlin.math.pow
 

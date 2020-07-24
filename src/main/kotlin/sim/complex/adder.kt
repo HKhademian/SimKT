@@ -1,4 +1,4 @@
-package sim.real
+package sim.complex
 
 import sim.base.*
 
@@ -19,7 +19,7 @@ fun fullAdder(A: Value, B: Value, C: Value, res: MutableValue, carry: MutableVal
 }
 
 // test adders
-internal fun main() {
+private fun main2() {
 	val A = mut(true)
 	val B = mut(true)
 	val res = mut(false)

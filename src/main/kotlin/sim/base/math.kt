@@ -1,4 +1,4 @@
-package sim
+package sim.base
 
 import sim.base.Value
 import sim.base.toBus
@@ -90,7 +90,7 @@ fun List<Value>.x32signed() =
 
 
 // test abilities
-internal fun main() {
+internal fun main3() {
 	val src = 1374.toBus(12) // 12-bit value list
 	// printing is ltr 0:n
 	// but correct binary is ltr n:0

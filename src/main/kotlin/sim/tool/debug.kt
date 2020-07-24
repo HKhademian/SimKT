@@ -1,4 +1,4 @@
-package sim
+package sim.tool
 
 import sim.base.*
 

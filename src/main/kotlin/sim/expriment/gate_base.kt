@@ -10,7 +10,7 @@ import sim.base.SingleInputElement
 import sim.base.Value
 import sim.base.Value.Companion.ONE
 import sim.base.Value.Companion.ZERO
-import sim.test.test
+import sim.tool.test
 
 private typealias Gate = LockElement
 
