@@ -51,14 +51,16 @@ interface MutableValue : Value {
 
 
 private class Constant constructor(private val value: Boolean, val name: String = "") : Value {
+	override fun toString() = value.toIntString()
 	override fun get() = value
-	override fun toString() = if (value) "1" else "0"
 	override val title: String
 		get() = "<Const>$name"
 }
 
 
 private class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
+	override fun toString() = value.toIntString()
+
 	override fun get() =
 		value.get()
 
@@ -66,15 +68,18 @@ private class Variable(private var value: Value = Value.ZERO, val name: String =
 		this.value = value
 	}
 
-	override fun toString() =
-		if (value.get()) "1" else "0"
-
 	override val title: String
 		get() = "<Variable>$name"
 
 //	override fun eval(time: Long) =
 //		value.eval(time)
 }
+
+inline fun Boolean.toIntString() =
+	if (this) "1" else "0"
+
+inline fun Value.toIntString() =
+	get().toIntString()
 
 /** create a constant value */
 @JvmOverloads
