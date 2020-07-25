@@ -54,13 +54,15 @@ private class Constant constructor(private val value: Boolean, val name: String 
 	override fun toString() = value.toIntString()
 	override fun get() = value
 	override val title: String
-		get() = "<Const>$name"
+		get() = if (name.isNotBlank()) name else "<Const>"
 }
 
 
-private class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
+private class Variable(private var value: Value = Value.ZERO, val name: String = "") : SingleInputElement, MutableValue, Eval {
 	override fun toString() = value.toIntString()
-	override val title: String get() = "Var:" + if (name.isNotEmpty()) name else value.title
+	override val title: String get() = if (name.isNotBlank()) name else value.title
+
+	override val input: Value get() = value
 
 	override fun get() = value.get()
 

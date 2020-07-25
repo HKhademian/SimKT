@@ -1,75 +1,101 @@
 package sim.complex
 
-import sim.base.*
-import sim.tool.testOn
+import sim.base.MutableMultiInputElement
+import sim.base.Value
+import sim.base.mut
+import sim.tool.test
+import sim.expriment.nand as andS
 import sim.expriment.nor as norS
+import sim.expriment.not as notS
 
-// https://www.allaboutcircuits.com/uploads/articles/gated-sr-latch-truth-table.jpg
-fun latchSR(en: Value, set: Value, reset: Value): Value =
-	mut(false, "q").also { q ->
-		q.set(norS(and(en, reset), nor(q, and(en, set))))
-	}
+/**
+ * simple SR-latch
+ * https://en.wikibooks.org/wiki/Electronics/Flip_Flops
+ * https://en.wikibooks.org/wiki/Electronics/Flip_Flops#/media/File:RS_Flip-flop_(NOR).svg
+ */
+fun latchSR(set: Value, reset: Value): Value {
+	val nor1 = norS(reset)
+	val nor2 = norS(set)
 
-// https://www.allaboutcircuits.com/uploads/articles/internal-logic-d-latch.jpg
-fun latchD(en: Value, data: Value): Value =
-	latchSR(en, data, not(data))
+	(nor1 as MutableMultiInputElement).inputs.add(nor2)
+
+	(nor2 as MutableMultiInputElement).inputs.add(nor1)
+
+	return nor1
+}
+
+/**
+ * gated SR-latch or clocked ST-Latch
+ * https://en.wikibooks.org/wiki/Electronics/Flip_Flops
+ * https://www.allaboutcircuits.com/uploads/articles/gated-sr-latch-truth-table.jpg
+ */
+fun gatedLatchSR(en: Value, set: Value, reset: Value): Value =
+	latchSR(andS(en, reset), andS(en, set))
+
+/**
+ * gated D-latch or clocked D-FlipFlop
+ * https://en.wikibooks.org/wiki/Electronics/Flip_Flops
+ * https://www.allaboutcircuits.com/uploads/articles/internal-logic-d-latch.jpg
+ */
+fun gatedLatchD(en: Value, data: Value): Value =
+	gatedLatchSR(en, data, notS(data))
 
 internal fun main() {
-	val EN = mut(true)
-	val S = mut(true)
-	val R = mut(true)
-	val D = mut(true)
+	val EN = mut(true, "EN")
+	val S = mut(true, "S")
+	val R = mut(true, "R")
+	val D = mut(true, "D")
 
-	val ld = latchD(EN, D)
-	val lsr = latchSR(EN, S, R)
+	val ld = gatedLatchD(EN, D)
+	val lsr = gatedLatchSR(EN, S, R)
 
-	testOn(ld, "D-Latch init ")
+	test("D-GatedLatch init ") { ld.get() }
 
-	testOn(ld, "D-Latch init ")
+	test("D-GatedLatch init ") { ld.get() }
 
 	EN.set(false); D.set(false)
-	testOn(ld, "D-Latch EN=0 D=0")
+	test("D-GatedLatch EN=0 D=0") { ld.get() }
 
 	EN.set(true); D.set(false)
-	testOn(ld, "D-Latch EN=1 D=0")
+	test("D-FlipFlop EN=1 D=0") { ld.get() }
 
 	EN.set(false); D.set(true)
-	testOn(ld, "D-Latch EN=0 D=1")
+	test("D-GatedLatch EN=0 D=1") { ld.get() }
 
 	EN.set(true); D.set(true)
-	testOn(ld, "D-Latch EN=1 D=1")
+	test("D-GatedLatch EN=1 D=1") { ld.get() }
 
 
-	testOn(lsr, "SR-Latch init ")
-	testOn(lsr, "SR-Latch EN=0 S=0 R=0") {
-		EN.set(false); S.set(false); R.set(false)
+	test("SR-GatedLatch init ") { lsr.get() }
+	test("SR-GatedLatch EN=0 S=0 R=0") {
+		EN.set(false); S.set(false); R.set(false); lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=0 S=1 R=0") {
-		EN.set(false); S.set(true); R.set(false)
+	test("SR-GatedLatch EN=0 S=1 R=0") {
+		EN.set(false); S.set(true); R.set(false); lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=0 S=0 R=1") {
-		EN.set(false); S.set(false); R.set(true)
+	test("SR-GatedLatch EN=0 S=0 R=1") {
+		EN.set(false); S.set(false); R.set(true); lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=1 S=0 R=0") {
-		EN.set(true); S.set(false); R.set(false)
+	test("SR-GatedLatch EN=1 S=0 R=0") {
+		EN.set(true); S.set(false); R.set(false); lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=1 S=1 R=0") {
-		EN.set(true); S.set(true); R.set(false)
+	test("SR-GatedLatch EN=1 S=1 R=0") {
+		EN.set(true); S.set(true); R.set(false); lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=1 S=0 R=1") {
-		EN.set(true); S.set(false); R.set(true)
+	test("SR-GatedLatch EN=1 S=0 R=1") {
+		EN.set(true); S.set(false); R.set(true); lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=1 S=1 R=0") {
-		EN.set(true); S.set(true); R.set(false)
+	test("SR-GatedLatch EN=1 S=1 R=0") {
+		EN.set(true); S.set(true); R.set(false); lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=1 S=1 R=1") {
-		EN.set(true); S.set(true); R.set(true)
+	test("SR-GatedLatch EN=1 S=1 R=1") {
+		EN.set(true); S.set(true); R.set(true); lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=1 S=1 R=1") {
-		EN.set(true); S.set(true); R.set(true)
+	test("SR-GatedLatch EN=1 S=1 R=1") {
+		EN.set(true); S.set(true); R.set(true);lsr.get()
 	}
-	testOn(lsr, "SR-Latch EN=1 S=1 R=1") {
-		EN.set(true); S.set(true); R.set(true)
+	test("SR-GatedLatch EN=1 S=1 R=1") {
+		EN.set(true); S.set(true); R.set(true);lsr.get()
 	}
 
 }

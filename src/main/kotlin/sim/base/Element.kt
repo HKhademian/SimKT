@@ -10,10 +10,6 @@ interface Element /*: Eval*/ {
 
 interface SingleInputElement : Element {
 	val input: Value
-		get() = Value.ZERO // default impl.
-
-//	override fun eval(time: Long) =
-//		input.eval(time)
 }
 
 interface SingleOutputElement : Element, Value {
@@ -27,35 +23,19 @@ interface SingleOutputElement : Element, Value {
 		output.get()// default impl.
 }
 
-///**
-// * if an element can handles a input and an output,
-// * like not-gate, we use this type of element which is
-// * both `SingleInputElement` and `SingleOutputElement`
-// */
-//interface SingleElement : SingleInputElement, SingleOutputElement
-
 /**
  * if an element can handle n inputs, like and gate
  * we use this type of element to unify all usages
  */
 interface MultiInputElement : Element {
-	val inputs: Bus
-
-//	override fun eval(time: Long) =
-//		inputs.eval(time)
+	val inputs: List<Value>
 }
 
-///**
-// * if an element can handle n outputs, like counters
-// * we use this type of element to unify all usages
-// */
-//interface MultiOutputElement : Element, Bus {
-//	val outputs: Bus
-//}
 
-///**
-// * if an element can handles n inputs and m outputs,
-// * like decoders, we use this type of element which is
-// * both `MultiInputElement` and `MultiOutputElement`
-// */
-//interface MultiElement : MultiInputElement, MultiOutputElement
+interface MutableSingleInputElement : SingleInputElement {
+	override var input: Value
+}
+
+interface MutableMultiInputElement : MultiInputElement {
+	override val inputs: MutableList<Value>
+}

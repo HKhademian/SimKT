@@ -14,7 +14,7 @@ infix fun Value.and(other: Bus) = other.map { this and it }.toList()
 infix fun Bus.and(other: Value) = this.map { it and other }.toList()
 infix fun Bus.and(other: Bus) = this.zip(other).map { (lhs, rhs) -> lhs and rhs }
 
-inline fun nand(vararg inputs: Value) = not(and(listOf(*inputs)))
+inline fun nand(vararg inputs: Value) = nand(listOf(*inputs))
 inline infix fun Value.nand(other: Value) = nand(this, other)
 infix fun Value.nand(other: Bus) = other.map { this nand it }.toList()
 infix fun Bus.nand(other: Value) = this.map { it nand other }.toList()
@@ -45,6 +45,25 @@ infix fun Bus.xnor(other: Value) = this.map { it xnor other }.toList()
 infix fun Bus.xnor(other: Bus) = this.zip(other).map { (lhs, rhs) -> lhs xnor rhs }
 
 internal fun main() {
+	if (true) {
+		val A = 7.toBus(8)
+		val B = 11.toBus(8)
+
+		println(
+			"""
+		A: ${A}
+		B: ${B}
+		!A:  ${A.not()}
+		A and B: ${A and B}
+		A nand B: ${A nand B}
+		A or B: ${A or B}
+		A nor B: ${A nor B}
+		A xor B: ${A xor B}
+		A xnor B: ${A xnor B}
+		""".trimIndent()
+		)
+	}
+
 	if (false) {
 		test("loop on Not") {
 			val lastGate = mut(false)
@@ -152,14 +171,16 @@ internal fun main() {
 		}
 	}
 
-	val A = const(false)
-	val B = const(true)
-	val C = const(true)
-	val D = const(false)
-	val res = and(xor(or(A, C), D), C, nor(A, B))
-	test("benchmark") {
-		repeat(100000) {
-			res.get()
+	if (false) {
+		val A = const(false)
+		val B = const(true)
+		val C = const(true)
+		val D = const(false)
+		val res = and(xor(or(A, C), D), C, nor(A, B))
+		test("benchmark") {
+			repeat(100000) {
+				res.get()
+			}
 		}
 	}
 }

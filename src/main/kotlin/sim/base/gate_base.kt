@@ -10,55 +10,34 @@ private class NotGate(override val input: Value) : SingleInputElement, Gate("Not
 	(!input.get())
 })
 
-private class AndGate(override val inputs: Bus) : MultiInputElement, Gate("And", {
-	(inputs.find { !it.get() } == null)
+private class AndGate(override val inputs: MutableList<Value>) : MutableMultiInputElement, Gate("And", {
+	inputs.fold(true) { pre, cur -> pre and cur.get() }
 })
 
-private class NandGate(override val inputs: Bus) : MultiInputElement, Gate("Nand", {
-	(inputs.find { !it.get() } != null)
+private class NandGate(override val inputs: MutableList<Value>) : MutableMultiInputElement, Gate("Nand", {
+	!inputs.fold(true) { pre, cur -> pre and cur.get() }
 })
 
-private class OrGate(override val inputs: Bus) : MultiInputElement, Gate("Or", {
-	(inputs.find { it.get() } != null)
+private class OrGate(override val inputs: MutableList<Value>) : MutableMultiInputElement, Gate("Or", {
+	inputs.fold(false) { pre, cur -> pre or cur.get() }
 })
 
-private class NorGate(override val inputs: Bus) : MultiInputElement, Gate("Nor", {
-	(inputs.find { it.get() } == null)
+private class NorGate(override val inputs: MutableList<Value>) : MutableMultiInputElement, Gate("Nor", {
+	!inputs.fold(false) { pre, cur -> pre or cur.get() }
 })
 
-private class XorGate(override val inputs: Bus) : MultiInputElement, Gate("Xor", {
+private class XorGate(override val inputs: MutableList<Value>) : MutableMultiInputElement, Gate("Xor", {
 	inputs.fold(false) { pre, cur -> pre xor cur.get() }
 })
 
-private class XnorGate(override val inputs: Bus) : MultiInputElement, Gate("Xnor", {
-	inputs.fold(true) { pre, cur -> !(pre xor cur.get()) }
+private class XnorGate(override val inputs: MutableList<Value>) : MutableMultiInputElement, Gate("Xnor", {
+	!inputs.fold(false) { pre, cur -> pre xor cur.get() }
 })
 
 fun not(input: Value): Value = NotGate(input)
-fun and(inputs: List<Value>): Value = AndGate(inputs)
-fun nand(inputs: List<Value>): Value = NandGate(inputs)
-fun or(inputs: List<Value>): Value = OrGate(inputs)
-fun nor(inputs: List<Value>): Value = NorGate(inputs)
-fun xor(inputs: List<Value>): Value = XorGate(inputs)
-fun xnor(inputs: List<Value>): Value = XnorGate(inputs)
-
-private fun main() {
-	if (false) {
-		val A = 7.toBus(8)
-		val B = 11.toBus(8)
-
-		println(
-			"""
-		A: ${A}
-		B: ${B}
-		!A:  ${A.not()}
-		A and B: ${A and B}
-		A nand B: ${A nand B}
-		A or B: ${A or B}
-		A nor B: ${A nor B}
-		A xor B: ${A xor B}
-		A xnor B: ${A xnor B}
-		""".trimIndent()
-		)
-	}
-}
+fun and(inputs: List<Value>): Value = AndGate(inputs.toMutableList())
+fun nand(inputs: List<Value>): Value = NandGate(inputs.toMutableList())
+fun or(inputs: List<Value>): Value = OrGate(inputs.toMutableList())
+fun nor(inputs: List<Value>): Value = NorGate(inputs.toMutableList())
+fun xor(inputs: List<Value>): Value = XorGate(inputs.toMutableList())
+fun xnor(inputs: List<Value>): Value = XnorGate(inputs.toMutableList())
