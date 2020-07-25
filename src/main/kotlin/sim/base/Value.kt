@@ -107,25 +107,3 @@ fun Value.toInt(): Int =
 /** converts a bool to eq value */
 fun Boolean.toValue(): Value =
 	if (this) Value.ONE else Value.ZERO
-
-
-///** Broadcast every `get` calls to value */
-//class ProxyValue(private val value: Value) : Value by value {
-//	override fun toString() = value.toString()
-//	override val title = "Proxy"
-//}
-
-///** Broadcast every `set` calls to value */
-//class ProxyMutableValue(private val value: MutableValue) : MutableValue by value {
-//	override fun toString() = value.toString()
-//	override val title = "MutProxy"
-//}
-
-///**
-// * a `ComputeValue` is like normal one, but it evaluate it's value by computing it, each time
-// */
-//class ComputeValue(private val compute: () -> Boolean) : Value {
-//	override fun get() = compute()
-//	override fun toString() = get().toString()
-//	override val title = "Compute"
-//}

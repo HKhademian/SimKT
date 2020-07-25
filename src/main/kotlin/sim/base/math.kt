@@ -1,10 +1,5 @@
 package sim.base
 
-import sim.base.Value
-import sim.base.toBus
-import sim.base.toInt
-import kotlin.math.pow
-
 /**
  * this method provides:
  * 1. sign/zero/one extention: when provide `n` value
@@ -24,7 +19,6 @@ import kotlin.math.pow
 fun List<Value>.extend(n: Int = 0, shift: Int = 0, signed: Boolean = false, extend: Value = Value.ZERO): List<Value> {
 	val size = this.size
 	val len = if (n > 0) n else size
-	val last = this.last()
 
 	return (0 until len)
 		.asSequence()
@@ -32,7 +26,7 @@ fun List<Value>.extend(n: Int = 0, shift: Int = 0, signed: Boolean = false, exte
 		.map { i ->
 			when {
 				i < 0 -> extend
-				i >= size -> if (!signed) extend else last
+				i >= size -> if (!signed) extend else this.last()
 				else -> this[i]
 			}
 		}
@@ -90,8 +84,8 @@ fun List<Value>.x32signed() =
 
 
 // test abilities
-internal fun main3() {
-	val src = 1374.toBus(12) // 12-bit value list
+internal fun main() {
+	val src = 1374.toBus(32) // 12-bit value list
 	// printing is ltr 0:n
 	// but correct binary is ltr n:0
 	// so do not confuse
@@ -112,6 +106,13 @@ internal fun main3() {
 		|sla1:		${src.extend(shift = 1, signed = true).toInt()} 		= ${src.extend(shift = 1, signed = true)}
 		|srl1:		${src.extend(shift = -1).toInt()} 		= ${src.extend(shift = -1)}
 		|sra1:		${src.extend(shift = -1, signed = true).toInt()} 		= ${src.extend(shift = -1, signed = true)}
+		|
+		|shl26:		${src.extend(shift = 26).toInt()} 		= ${src.extend(shift = 26)}
+		|shl27:		${src.extend(shift = 27).toInt()} 		= ${src.extend(shift = 27)}
+		|shl28:		${src.extend(shift = 28).toInt()} 		= ${src.extend(shift = 28)}
+		|shl29:		${src.extend(shift = 29).toInt()} 		= ${src.extend(shift = 29)}
+		|shl30:		${src.extend(shift = 30).toInt()} 		= ${src.extend(shift = 30)}
+		|shl31:		${src.extend(shift = 31).toInt()} 		= ${src.extend(shift = 31)}
 		|""".trimMargin()
 	)
 }
