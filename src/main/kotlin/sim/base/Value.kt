@@ -60,19 +60,13 @@ private class Constant constructor(private val value: Boolean, val name: String 
 
 private class Variable(private var value: Value = Value.ZERO, val name: String = "") : MutableValue, Eval {
 	override fun toString() = value.toIntString()
+	override val title: String get() = "Var:" + if (name.isNotEmpty()) name else value.title
 
-	override fun get() =
-		value.get()
+	override fun get() = value.get()
 
 	override fun set(value: Value) {
 		this.value = value
 	}
-
-	override val title: String
-		get() = "<Variable>$name"
-
-//	override fun eval(time: Long) =
-//		value.eval(time)
 }
 
 inline fun Boolean.toIntString() =
@@ -85,7 +79,7 @@ inline fun Value.toIntString() =
 @JvmOverloads
 @JvmName("constant")
 fun const(value: Boolean, name: String = ""): Value =
-	Constant(value, name)
+	value.toValue()  //Constant(value, name)
 
 /** create a mutable value */
 @JvmOverloads
@@ -107,7 +101,6 @@ fun Value.toMut(): MutableValue =
 /** converts a value to equivalent int */
 fun Value.toInt(): Int =
 	if (get()) 1 else 0
-
 
 /** converts a bool to eq value */
 fun Boolean.toValue(): Value =
