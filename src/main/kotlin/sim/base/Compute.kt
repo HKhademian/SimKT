@@ -20,9 +20,9 @@ open class LockElement(override val title: String, private val computer: () -> B
 			lock = true
 			cache = computer()
 			lock = false
-		} /*else {
-			println("locked")
-		}*/
+		} else {
+			//println("locked")
+		}
 		return@synchronized cache
 	}
 

@@ -3,11 +3,28 @@ package sim.complex
 import sim.base.MutableMultiInputElement
 import sim.base.Value
 import sim.base.mut
-import sim.base.not
 import sim.tool.println
 import sim.tool.test
-import sim.expriment.not as notS
 import sim.expriment.nand as nandS
+import sim.expriment.not as notS
+
+/**
+ * https://en.wikipedia.org/wiki/Flip-flop_(electronics)#/media/File:D-Type_Flip-flop_Diagram.svg
+ */
+private fun block(input1: Value, input2: Value): Value {
+	val nand1 = nandS(input1, input2)
+	val nand2 = nandS(nand1, input2)
+	val nand3 = nandS(nand1)
+	val nand4 = nandS(nand2, nand3)
+	(nand3 as MutableMultiInputElement).inputs.add(nand4)
+	return nand3
+}
+
+/**
+ * https://en.wikipedia.org/wiki/Flip-flop_(electronics)#/media/File:D-Type_Flip-flop_Diagram.svg
+ */
+fun flipflop(clock: Value, data: Value): Value =
+	block(block(data, notS(clock)), clock)
 
 /**
  * D-FlipFlop, master slave pattern
@@ -55,20 +72,34 @@ fun flipFlopRE(clock: Value, data: Value): Value {
 internal fun main() {
 	val clock = mut(true, "Clock")
 	val data = mut(true, "Data")
-	val res = flipFlopRE(clock, data)
+	val res = flipflop(clock, data)
 
 	res.get().println()
 	res.println()
 
 
+	data.reset()
 	println("clock:$clock,\tdata:$data,\tres:${res}")
+
 	clock.toggle()
+	data.set()
 	println("clock:$clock,\tdata:$data,\tres:${res}")
+
 	clock.toggle()
+	data.reset()
 	println("clock:$clock,\tdata:$data,\tres:${res}")
+
+	data.set()
+	println("clock:$clock,\tdata:$data,\tres:${res}")
+
 	clock.toggle()
 	println("clock:$clock,\tdata:$data,\tres:${res}")
 
+	clock.toggle()
+	println("clock:$clock,\tdata:$data,\tres:${res}")
+
+	clock.toggle()
+	println("clock:$clock,\tdata:$data,\tres:${res}")
 
 	test("rising edge") {
 		clock.toggle()
@@ -118,11 +149,10 @@ internal fun main() {
 		println("clock:$clock,\tdata:$data,\tres:${res}")
 	}
 
-
-	(0..25).forEach {
-		clock.toggle()
-		if (it % 5 == 0) data.toggle()
-		println("i:$it,\tclock:$clock,\tdata:$data,\tres:$res")
-		Thread.sleep(10);
-	}
+//	(0..25).forEach {
+//		clock.toggle()
+//		if (it % 5 == 0) data.toggle()
+//		println("i:$it,\tclock:$clock,\tdata:$data,\tres:$res")
+//		Thread.sleep(10);
+//	}
 }
