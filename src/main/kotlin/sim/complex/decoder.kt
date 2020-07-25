@@ -1,4 +1,4 @@
-package sim.expriment
+package sim.complex
 
 /// tutorialspoint.com/digital_circuits/digital_circuits_decoders.htm
 
@@ -9,32 +9,32 @@ import sim.tool.testOn
 
 fun dec1(en: Value, a0: Value): Bus {
 	return bus(
-		and(en, not(a0)),
-		and(en, a0)
+		sim.expriment.and(en, sim.expriment.not(a0)),
+		sim.expriment.and(en, a0)
 	)
 }
 
 fun dec2(en: Value, a0: Value, a1: Value): Bus {
-	val not_a0 = not(a0)
-	val not_a1 = not(a1)
+	val not_a0 = sim.expriment.not(a0)
+	val not_a1 = sim.expriment.not(a1)
 	return bus(
-		and(en, not_a0, not_a1),
-		and(en, a0, not_a1),
-		and(en, not_a0, a1),
-		and(en, a0, a1)
+		sim.expriment.and(en, not_a0, not_a1),
+		sim.expriment.and(en, a0, not_a1),
+		sim.expriment.and(en, not_a0, a1),
+		sim.expriment.and(en, a0, a1)
 	)
 }
 
 fun dec3(en: Value, a0: Value, a1: Value, a2: Value): Bus =
 	merge(
-		dec2(and(en, not(a2)), a0, a1),
-		dec2(and(en, a2), a0, a1)
+		dec2(sim.expriment.and(en, sim.expriment.not(a2)), a0, a1),
+		dec2(sim.expriment.and(en, a2), a0, a1)
 	)
 
 fun dec4(en: Value, a0: Value, a1: Value, a2: Value, a3: Value): Bus =
 	merge(
-		dec3(and(en, not(a3)), a0, a1, a2),
-		dec3(and(en, a3), a0, a1, a2)
+		dec3(sim.expriment.and(en, sim.expriment.not(a3)), a0, a1, a2),
+		dec3(sim.expriment.and(en, a3), a0, a1, a2)
 	)
 
 fun dec(en: Value, inputs: List<Value>): Bus = when {
@@ -43,8 +43,8 @@ fun dec(en: Value, inputs: List<Value>): Bus = when {
 	inputs.isEmpty() -> listOf()
 	else ->
 		merge(
-			dec(and(en, not(inputs.last())), inputs.dropLast(1)),
-			dec(and(en, inputs.last()), inputs.dropLast(1))
+			dec(sim.expriment.and(en, sim.expriment.not(inputs.last())), inputs.dropLast(1)),
+			dec(sim.expriment.and(en, inputs.last()), inputs.dropLast(1))
 		)
 }
 
