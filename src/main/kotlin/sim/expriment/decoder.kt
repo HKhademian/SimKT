@@ -4,6 +4,8 @@ package sim.expriment
 
 import sim.base.*
 import sim.base.Value.Companion.ONE
+import sim.tool.test
+import sim.tool.testOn
 
 fun dec1(en: Value, a0: Value): Bus {
 	return bus(
@@ -69,25 +71,31 @@ internal fun main() {
 		"d5n" to dec(EN, A, B, C, D, E)
 	)
 
-	decs.forEach { println(it) }
-	println()
+	testOn(decs, "all one")
 
-	EN.set(false)
-	decs.forEach { println(it) }
-	println()
+	testOn(decs, "all one")
 
-	EN.set(false)
-	A.set(false)
-	decs.forEach { println(it) }
-	println()
+	testOn(decs, "EN=0") {
+		EN.set(false)
+	}
 
-	EN.set(true)
-	A.set(false)
-	decs.forEach { println(it) }
-	println()
+	testOn(decs, "EN=0 A=0") {
+		EN.set(false)
+		A.set(false)
+	}
 
-	(0 until 32).forEach {
-		println("$it: " + dec(ONE, it.toBus(5)))
+	testOn(decs, "EN=1 A=0") {
+		EN.set(true)
+		A.set(false)
+	}
+
+	val x5 = (0 until 32).map { it to dec(ONE, it.toBus(5)) }.toList()
+	test("truth table") {
+
+		x5.forEach { (i, d) ->
+			println("$i:\t$d")
+		}
+
 	}
 
 }
