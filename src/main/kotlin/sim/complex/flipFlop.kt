@@ -23,14 +23,14 @@ private fun block(input1: Value, input2: Value): Value {
 /**
  * https://en.wikipedia.org/wiki/Flip-flop_(electronics)#/media/File:D-Type_Flip-flop_Diagram.svg
  */
-fun flipflop(clock: Value, data: Value): Value =
+fun flipflopBlock(clock: Value, data: Value): Value =
 	block(block(data, notS(clock)), clock)
 
 /**
  * D-FlipFlop, master slave pattern
  * create by two d-gated-latches
  */
-fun flipFlopMS(clock: Value, data: Value): Value =
+fun flipflopMS(clock: Value, data: Value): Value =
 	gatedLatchD(notS(clock), gatedLatchD(clock, data))
 
 /**
@@ -39,7 +39,7 @@ fun flipFlopMS(clock: Value, data: Value): Value =
  * https://en.wikipedia.org/wiki/Flip-flop_(electronics)
  * https://upload.wikimedia.org/wikipedia/commons/9/99/Edge_triggered_D_flip_flop.svg
  */
-fun flipFlopRE(clock: Value, data: Value): Value {
+fun flipflopRE(clock: Value, data: Value): Value {
 	val nand1 = nandS()
 	val nand2 = nandS()
 	val nand3 = nandS()
@@ -69,14 +69,48 @@ fun flipFlopRE(clock: Value, data: Value): Value {
 	return nand5
 }
 
-internal fun main() {
+/** creates and returns a bus of rising-edge-flipflops */
+fun flipflopRE(clock: Value, newDataBus: List<Value>): List<Value> =
+	newDataBus.map { flipflopRE(clock, it) }.toList()
+
+/** creates a bus of master-slave-flipflops */
+fun flipflopMS(clock: Value, newDataBus: List<Value>): List<Value> =
+	newDataBus.map { flipflopMS(clock, it) }.toList()
+
+/** creates a bus of block-flipflops */
+fun flipflopBlock(clock: Value, newDataBus: List<Value>): List<Value> =
+	newDataBus.map { flipflopBlock(clock, it) }.toList()
+
+private fun testBenchmark() {
 	val clock = mut(true, "Clock")
 	val data = mut(true, "Data")
-	val res = flipflop(clock, data)
+	repeat(10) {
+		println("************** $it ***************")
+
+		listOf(
+			"FF" to flipflopRE(clock, data),
+			"FF-MS" to flipflopMS(clock, data),
+			"FF-RE" to flipflopRE(clock, data)
+		).forEach { (name, ff) ->
+			test("benchmark $name") {
+				repeat(10000000) {
+					if (it % 7 == 0) data.toggle()
+					clock.toggle()
+					ff.get()
+				}
+			}
+			System.gc()
+		}
+	}
+}
+
+private fun test1() {
+	val clock = mut(true, "Clock")
+	val data = mut(true, "Data")
+	val res = flipflopRE(clock, data)
 
 	res.get().println()
 	res.println()
-
 
 	data.reset()
 	println("clock:$clock,\tdata:$data,\tres:${res}")
@@ -149,10 +183,14 @@ internal fun main() {
 		println("clock:$clock,\tdata:$data,\tres:${res}")
 	}
 
-//	(0..25).forEach {
-//		clock.toggle()
-//		if (it % 5 == 0) data.toggle()
-//		println("i:$it,\tclock:$clock,\tdata:$data,\tres:$res")
-//		Thread.sleep(10);
-//	}
+	(0..25).forEach {
+		clock.toggle()
+		if (it % 5 == 0) data.toggle()
+		println("i:$it,\tclock:$clock,\tdata:$data,\tres:$res")
+		Thread.sleep(10);
+	}
+}
+
+internal fun main() {
+	test1()
 }
