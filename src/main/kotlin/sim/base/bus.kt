@@ -102,6 +102,10 @@ fun Bus.toInt(): Int =
 fun Bus.toLong(): Long =
 	this.foldRight(0) { it, acc: Long -> (acc shl 1) or (it.toInt().toLong()) }
 
+/** get all values and return list of boolean */
+fun Bus.read(): List<Boolean> =
+	this.map { it.get() }.toList()
+
 /** converts a long to n-bit list of values */
 @JvmOverloads
 fun Long.toBus(n: Int = 32): Bus =

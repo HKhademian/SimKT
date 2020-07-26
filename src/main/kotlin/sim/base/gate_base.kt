@@ -6,6 +6,10 @@ package sim.base
 
 private typealias Gate = SimpleElement
 
+private class BufferGate(override val input: Value) : SingleInputElement, Gate("Buffer", {
+	(input.get())
+})
+
 private class NotGate(override val input: Value) : SingleInputElement, Gate("Not", {
 	(!input.get())
 })

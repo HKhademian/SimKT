@@ -11,6 +11,10 @@ import sim.base.Value
 
 private typealias Gate = LockElement
 
+private class BufferGate(override val input: Value) : SingleInputElement, Gate("Buffer", {
+	(input.get())
+})
+
 private class NotGate(override val input: Value) : SingleInputElement, Gate("Not", {
 	!input.get()
 })
@@ -39,6 +43,7 @@ private class XnorGate(override val inputs: MutableList<Value>) : MutableMultiIn
 	!inputs.fold(false) { pre, cur -> pre xor cur.get() }
 })
 
+fun buff(input: Value): Value = BufferGate(input)
 fun not(input: Value): Value = NotGate(input)
 fun and(inputs: List<Value>): Value = AndGate(inputs.toMutableList())
 fun nand(inputs: List<Value>): Value = NandGate(inputs.toMutableList())

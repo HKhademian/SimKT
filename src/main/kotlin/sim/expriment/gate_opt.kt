@@ -7,6 +7,7 @@ package sim.expriment
 import sim.base.*
 import sim.tool.test
 
+inline fun Bus.buff() = this.map { buff(it) }.toList()
 inline fun Bus.not() = this.map { not(it) }.toList()
 
 inline fun and(vararg inputs: Value) = and(listOf(*inputs))
