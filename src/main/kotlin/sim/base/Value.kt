@@ -58,30 +58,39 @@ private class Constant constructor(private val value: Boolean, val name: String 
 }
 
 
-private class Variable(private var value: Value = Value.ZERO, val name: String = "") : SingleInputElement, MutableValue, Eval {
-	override fun toString() = value.toIntString()
-	override val title: String get() = if (name.isNotBlank()) name else value.title
+/**
+ * this type of value holds reference to source value
+ * it gets values from `source` and return it (on the fly calculation)
+ * when you set another value to this, it just change source
+ */
+private class Variable(private var source: Value = Value.ZERO, val name: String = "") : MutableSingleInputElement, MutableValue, Eval {
+	override fun toString() = source.toIntString()
+	override val title: String get() = if (name.isNotBlank()) name else source.title
 
-	override val input: Value get() = value
+	override var input: Value
+		get() = source;
+		set(value) {
+			source = value
+		}
 
-	override fun get() = value.get()
+	override fun get() = source.get()
 
 	override fun set(value: Value) {
-		this.value = value
+		this.source = value
 	}
 }
 
-inline fun Boolean.toIntString() =
+fun Boolean.toIntString() =
 	if (this) "1" else "0"
 
-inline fun Value.toIntString() =
+fun Value.toIntString() =
 	get().toIntString()
 
 /** create a constant value */
 @JvmOverloads
 @JvmName("constant")
 fun const(value: Boolean, name: String = ""): Value =
-	value.toValue()  //Constant(value, name)
+	if (name.isBlank()) value.toValue() else Constant(value, name)
 
 /** create a mutable value */
 @JvmOverloads

@@ -14,8 +14,8 @@ val ONE_BUS: Bus = (0..64).map { Value.ONE }.toList()
 
 /** creates a n-bit mutable bus to use */
 @JvmOverloads
-fun bus(n: Int = 32): MutableBus =
-	(0 until n).map { mut(false) }.toList()
+fun bus(n: Int, name: String = ""): MutableBus =
+	(0 until n).map { mut(false, if (name.isNotBlank()) "$name[$it]" else name) }.toList()
 
 /** create bus of some values */
 fun bus(vararg values: Value): Bus =
