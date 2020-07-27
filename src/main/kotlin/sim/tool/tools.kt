@@ -4,7 +4,7 @@ import sim.base.Bus
 import sim.base.MutableSingleInputElement
 import sim.base.Value
 
-fun <T> Value.keepSource(newValue: Value, action: (it: Value, source: Value, newValue: Value) -> T): T {
+fun <T, NEW_VAL : Value> Value.keepSource(newValue: NEW_VAL, action: (it: Value, source: Value, newValue: NEW_VAL) -> T): T {
 	this as MutableSingleInputElement
 	val source = this.input
 	this.input = newValue
@@ -13,7 +13,7 @@ fun <T> Value.keepSource(newValue: Value, action: (it: Value, source: Value, new
 	return result
 }
 
-fun <T> Bus.keepSource(newValue: Bus, action: (it: Bus, source: Bus, newValue: Bus) -> T): T {
+fun <T, NEW_VAL : Value> Bus.keepSource(newValue: List<NEW_VAL>, action: (it: Bus, source: Bus, newValue: List<NEW_VAL>) -> T): T {
 	val me = this.map { it as MutableSingleInputElement }
 	val source = me.map { it.input }
 	me.forEachIndexed { i, it -> it.input = newValue[i] }
