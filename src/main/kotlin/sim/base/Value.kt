@@ -63,7 +63,7 @@ private class Constant constructor(private val value: Boolean, val name: String 
  * it gets values from `source` and return it (on the fly calculation)
  * when you set another value to this, it just change source
  */
-private class Variable(private var source: Value = Value.ZERO, val name: String = "") : MutableSingleInputElement, MutableValue, Eval {
+private class Variable(private var source: Value = Value.ZERO, val name: String = "") : MutableSingleInputElement, MutableValue {
 	override fun toString() = source.toIntString()
 	override val title: String get() = if (name.isNotBlank()) name else source.title
 

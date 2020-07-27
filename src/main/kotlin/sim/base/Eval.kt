@@ -10,8 +10,7 @@ package sim.base
  * internal state
  */
 interface Eval {
-	fun eval(time: Long) =
-		Unit // default, for comb. circuits
+	fun eval(time: Long) //= Unit // default, for comb. circuits
 }
 
 fun Any?.eval(time: Long): Unit = when (this) {
