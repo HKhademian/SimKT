@@ -11,9 +11,6 @@ dependencies {
 	implementation(platform(kotlin("bom")))
 	implementation(kotlin("stdlib-jdk8"))
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
-
-	implementation(kotlin("test"))
-	implementation(kotlin("test-junit"))
 }
 
 java {

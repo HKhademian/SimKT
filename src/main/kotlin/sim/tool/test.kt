@@ -1,7 +1,8 @@
 package sim.tool
 
-import sim.tool.debugWrite
 import java.util.function.Consumer
+
+val assertEquals = { x: Any?, y: Any? -> assert(x == y) }
 
 inline fun <T> measure(crossinline task: () -> T): Pair<Pair<Long, Long>, T> {
 	val startMs = System.currentTimeMillis()
