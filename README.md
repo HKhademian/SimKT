@@ -6,7 +6,7 @@ to contribiute:
 
 Examples: 
 
-```
+```kotlin
 val A = 7.toBus(8)
 		val B = 11.toBus(8)
 
@@ -26,7 +26,7 @@ val A = 7.toBus(8)
 ```
 
 
-```
+```kotlin
 		test("loop on Not") {
 			val lastGate = mut(false)
 			val gate = not(lastGate)
@@ -71,7 +71,7 @@ val A = 7.toBus(8)
 
 
 
-```
+```kotlin
 		val data = mut(false)
 		val en = mut(false)
 		val q = mut(true)
@@ -138,7 +138,7 @@ val A = 7.toBus(8)
 
 
 
-```
+```kotlin
 		val A = const(false)
 		val B = const(true)
 		val C = const(true)
